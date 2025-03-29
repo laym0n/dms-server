@@ -1,7 +1,7 @@
-package com.victor.kochnev.application.dmsserver;
+package com.victor.kochnev.dmsserver;
 
-import com.victor.kochnev.application.dmsserver.configuration.LocalDevTestcontainersConfiguration;
 import com.victor.kochnev.dmsserver.application.DmsApplication;
+import com.victor.kochnev.dmsserver.configuration.LocalDevTestcontainersConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

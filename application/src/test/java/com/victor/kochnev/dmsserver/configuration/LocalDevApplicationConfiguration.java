@@ -1,4 +1,4 @@
-package com.victor.kochnev.application.dmsserver.configuration;
+package com.victor.kochnev.dmsserver.configuration;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Bean;

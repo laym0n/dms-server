@@ -1,5 +1,6 @@
-package com.victor.kochnev.application.dmsserver.configuration;
+package com.victor.kochnev.dmsserver.configuration;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -17,11 +18,17 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 @Profile("swagger")
 @Order(Ordered.HIGHEST_PRECEDENCE + 10000000)
 public class SwaggerConfiguration {
+    @Value("${springdoc.api-docs.path:/v3/api-docs}")
+    private String apiDocsPath;
+
+    @Value("${springdoc.swagger-ui.path:/swagger-ui}")
+    private String swaggerUiPath;
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE + 10000000)
     public SecurityFilterChain localDevSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .securityMatcher("/check-update-platform.yaml", "/swagger-ui.html")
+                .securityMatcher(apiDocsPath + "/**", swaggerUiPath + "/**", "/swagger-ui/**")
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)

@@ -1,6 +1,8 @@
 package com.victor.kochnev.dmsserver.infra.api.config;
 
+import com.victor.kochnev.dmsserver.auth.api.AuthenticationFacade;
 import com.victor.kochnev.dmsserver.infra.api.security.JwtAuthenticationFilter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,11 +25,16 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestSecurityConfiguration {
 
+    @Autowired
+    private AuthenticationFacade authenticationFacade;
+
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
-    public SecurityFilterChain restPresentersSecurityFilterChain(HttpSecurity http, JwtAuthenticationFilter filter, ApplicationContext context) throws Exception {
+    public SecurityFilterChain restPresentersSecurityFilterChain(HttpSecurity http, ApplicationContext context) throws Exception {
         var expressionHandler = new DefaultHttpSecurityExpressionHandler();
         expressionHandler.setApplicationContext(context);
+
+        var filter = jwtAuthenticationFilter();
 
         return http
                 .securityMatcher("/profile", "/authentication/**")
@@ -35,6 +42,7 @@ public class RestSecurityConfiguration {
                         .requestMatchers("/authentication/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/profile").permitAll()
                         .requestMatchers(HttpMethod.GET, "/profile").authenticated()
+//                        .anyRequest().denyAll() TODO вроде и с этим должно работать
                 )
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .formLogin(AbstractHttpConfigurer::disable)
@@ -55,5 +63,9 @@ public class RestSecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().denyAll()
                 ).build();
+    }
+
+    private JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(authenticationFacade);
     }
 }

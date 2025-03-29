@@ -1,4 +1,4 @@
-package com.victor.kochnev.application.dmsserver.configuration;
+package com.victor.kochnev.dmsserver.configuration;
 
 import com.github.dockerjava.api.command.CreateContainerCmd;
 import com.github.dockerjava.api.model.ExposedPort;
