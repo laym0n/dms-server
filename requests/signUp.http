@@ -1,0 +1,13 @@
+POST http://localhost:8080/profile
+Content-Type: application/json
+Accept: application/json
+
+{
+  "user": {
+    "login": "login",
+    "password": "password"
+  },
+  "name": "Victor Kochnev"
+}
+
+###

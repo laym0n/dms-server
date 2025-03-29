@@ -28,12 +28,17 @@
         <mapstruct-processor.version>1.5.5.Final</mapstruct-processor.version>
         <org.projectlombok.version>1.18.30</org.projectlombok.version>
         <org.projectlombok.lombok-mapstruct-binding.version>0.2.0</org.projectlombok.lombok-mapstruct-binding.version>
+        <jackson-databind.version>2.17.0</jackson-databind.version>
     </properties>
 
     <modules>
         <module>auth</module>
         <module>application</module>
         <module>common</module>
+        <module>infra</module>
+        <module>profile</module>
+        <module>consultation</module>
+        <module>document</module>
     </modules>
 
     <dependencyManagement>
@@ -50,13 +55,64 @@
             </dependency>
             <dependency>
                 <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>document-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
                 <artifactId>auth-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>profile-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>consultation-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>profile-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>document-domain</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.victor.kochnev.dmsserver</groupId>
                 <artifactId>auth-domain</artifactId>
                 <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>consultation-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>infra-data</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>infra-rest</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>infra-p2p-signaling</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>1.5.5.Final</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -67,8 +123,47 @@
             <artifactId>spring-boot</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.14.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>0.2.6</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson-databind.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson-databind.version}</version>
         </dependency>
     </dependencies>
 

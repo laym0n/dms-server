@@ -1,0 +1,21 @@
+server:
+  port: ${ev.server.port:8080}
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: ${ev.spring.datasource.username}
+    password: ${ev.spring.datasource.password}
+    url: ${ev.spring.datasource.url}
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+app:
+  rest:
+    security:
+      jwt:
+        secret: ${ev.app.rest.security.jwt.secret}
+        access-token-duration: ${ev.app.rest.security.jwt.access-token-duration}
+        refresh-token-duration: ${ev.app.rest.security.jwt.refresh-token-duration}
+        refresh-token-remember-me-duration: ${ev.app.rest.security.jwt.refresh-token-remember-me-duration}

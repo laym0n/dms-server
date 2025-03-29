@@ -1,0 +1,8 @@
+POST http://localhost:8080/authentication
+Content-Type: application/json
+
+{
+  "login": "login",
+  "password": "password",
+  "rememberMe": true
+}
