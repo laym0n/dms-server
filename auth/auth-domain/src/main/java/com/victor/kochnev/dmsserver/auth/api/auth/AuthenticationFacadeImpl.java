@@ -1,8 +1,8 @@
 package com.victor.kochnev.dmsserver.auth.api.auth;
 
 import com.victor.kochnev.dmsserver.auth.api.AuthenticationFacade;
+import com.victor.kochnev.dmsserver.auth.api.auth.jwt.JwtService;
 import com.victor.kochnev.dmsserver.auth.model.AuthenticateResponse;
-import com.victor.kochnev.dmsserver.auth.model.AuthenticationRefreshRequest;
 import com.victor.kochnev.dmsserver.auth.model.AuthenticationRequest;
 import com.victor.kochnev.dmsserver.common.security.SecurityUserService;
 import com.victor.kochnev.dmsserver.common.security.UserSecurityModel;
@@ -12,8 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-
-import java.security.InvalidParameterException;
 
 @Component
 @RequiredArgsConstructor
@@ -32,20 +30,17 @@ public class AuthenticationFacadeImpl implements AuthenticationFacade {
     }
 
     @Override
-    public AuthenticateResponse refresh(AuthenticationRefreshRequest request) {
-        var user = jwtService.getUserFromToken(request.getRefreshToken());
-        user = (UserSecurityModel) securityUserService.loadUserByUsername(user.getUsername());
-        var jwtTokenDto = jwtService.generateJwtToken(request.getRememberMe(), user);
+    public AuthenticateResponse refresh(String refreshToken) {
+        var refreshDataFromToken = jwtService.getRefreshDataFromToken(refreshToken);
+        var user = (UserSecurityModel) securityUserService.loadUserByUsername(refreshDataFromToken.getUser().getUsername());
+        var jwtTokenDto = jwtService.generateJwtToken(refreshDataFromToken.isRememberMeSet(), user);
         return new AuthenticateResponse(jwtTokenDto);
     }
 
     @Override
     public void authenticate(String token) {
-        var user = jwtService.getUserFromToken(token);
-        if (user.getAuthorities().isEmpty()) {
-            throw new InvalidParameterException("Passed refresh token");
-        }
-        var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        var accessDataFromToken = jwtService.getAccessDataFromToken(token);
+        var authentication = new UsernamePasswordAuthenticationToken(accessDataFromToken.getUser(), null, accessDataFromToken.getUser().getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 }
