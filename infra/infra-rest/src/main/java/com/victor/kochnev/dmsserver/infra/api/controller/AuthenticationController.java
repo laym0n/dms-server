@@ -7,14 +7,11 @@ import com.victor.kochnev.dmsserver.auth.model.JwtTokenDto;
 import com.victor.kochnev.dmsserver.infra.api.security.JwtCookieUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
-import java.util.Arrays;
 
 @RestController
 @CrossOrigin
@@ -33,7 +29,6 @@ import java.util.Arrays;
 @Tag(name = "Authentication")
 public class AuthenticationController {
     private static final String AUTHENTICATION_ENDPOINT = "POST /authentication";
-    private static final String AUTHENTICATION_REFRESH_ENDPOINT = "POST /authentication/refresh";
     private final AuthenticationFacade authenticationFacade;
 
     @PostMapping("/authentication")
@@ -48,28 +43,6 @@ public class AuthenticationController {
 
         JwtCookieUtils.addAccessAndRefreshCookies(response, authenticationResponse);
 
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/authentication/refresh")
-    @Operation(operationId = "refreshAuthentication")
-    public ResponseEntity<Void> refreshAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        log.info("Request: {}", AUTHENTICATION_REFRESH_ENDPOINT);
-
-        var optionalRefreshToken = Arrays.stream(request.getCookies())
-                .filter(cookie -> JwtCookieUtils.JWT_REFRESH_TOKEN_COOKIE_NAME.equals(cookie.getName()))
-                .map(Cookie::getValue)
-                .findFirst();
-        if (optionalRefreshToken.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        var refreshToken = optionalRefreshToken.get();
-
-        var authenticationResponse = authenticationFacade.refresh(refreshToken);
-
-        JwtCookieUtils.addAccessAndRefreshCookies(response, authenticationResponse);
-
-        log.info("Request: {} proccesed", AUTHENTICATION_REFRESH_ENDPOINT);
         return ResponseEntity.ok().build();
     }
 
