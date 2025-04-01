@@ -6,23 +6,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Duration;
+
+@Entity
+@Table(name = "consultation_slot")
 @NoArgsConstructor
 @Getter
 @Setter
-@Entity
-@Table(name = "profile")
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @SuperBuilder
-public class ProfileEntity extends BaseEntity {
-
+public class ConsultationSlotEntity extends BaseEntity {
+    @Column(name = "duration", nullable = false)
+    private Duration duration;
+    @ManyToOne
+    @JoinColumn(name = "specialization_id", nullable = false)
+    private SpecializationEntity specialization;
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private CityEntity city;
-
-    @Column(name = "name", nullable = false)
-    private String name;
 }

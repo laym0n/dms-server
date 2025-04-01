@@ -2,15 +2,16 @@ package com.victor.kochnev.dmsserver.consultation.model;
 
 import com.victor.kochnev.dmsserver.auth.model.UserModel;
 import com.victor.kochnev.dmsserver.common.model.BaseModel;
-import com.victor.kochnev.dmsserver.consultation.model.value.object.ConsultationSlotModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.ZonedDateTime;
 
 @Getter
 @Setter
+@SuperBuilder
 @NoArgsConstructor
 public class ConsultationModel extends BaseModel {
     private UserModel patient;

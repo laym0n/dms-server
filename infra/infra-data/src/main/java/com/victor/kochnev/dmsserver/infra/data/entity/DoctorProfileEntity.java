@@ -2,7 +2,6 @@ package com.victor.kochnev.dmsserver.infra.data.entity;
 
 import com.victor.kochnev.dmsserver.infra.data.entity.converter.EducationCollectionConverter;
 import com.victor.kochnev.dmsserver.infra.data.entity.converter.WorkExperienceCollectionConverter;
-import com.victor.kochnev.dmsserver.infra.data.entity.identifier.SpecializationEntity;
 import com.victor.kochnev.dmsserver.profile.model.value.object.EducationModel;
 import com.victor.kochnev.dmsserver.profile.model.value.object.WorkExperienceModel;
 import jakarta.persistence.*;
@@ -24,7 +23,11 @@ public class DoctorProfileEntity extends ProfileEntity {
     @Column(name = "educations")
     @Convert(converter = EducationCollectionConverter.class)
     private Collection<EducationModel> educations;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "doctor_profile_id", nullable = false)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "doctor_profile_specialization",
+            joinColumns = @JoinColumn(name = "doctor_profile_id"),
+            inverseJoinColumns = @JoinColumn(name = "specialization_id")
+    )
     private Collection<SpecializationEntity> specializations;
 }

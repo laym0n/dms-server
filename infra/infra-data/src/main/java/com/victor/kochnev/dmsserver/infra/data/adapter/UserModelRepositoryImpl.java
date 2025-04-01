@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
@@ -28,6 +29,13 @@ public class UserModelRepositoryImpl implements UserModelRepository {
     @Transactional
     public Optional<UserModel> findByLogin(String login) {
         return userRepository.findByLogin(login)
+                .map(userEntityMapper::mapToModel);
+    }
+
+    @Override
+    @Transactional
+    public Optional<UserModel> findById(UUID userId) {
+        return userRepository.findById(userId)
                 .map(userEntityMapper::mapToModel);
     }
 }
