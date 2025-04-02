@@ -1,6 +1,8 @@
 package com.victor.kochnev.dmsserver.consultation.api;
 
 import com.victor.kochnev.dmsserver.auth.infra.UserModelRepository;
+import com.victor.kochnev.dmsserver.common.dto.ModelsRequestDto;
+import com.victor.kochnev.dmsserver.common.dto.ModelsResponseDto;
 import com.victor.kochnev.dmsserver.common.exception.ModuleException;
 import com.victor.kochnev.dmsserver.common.exception.ResourceAlreadyExistsException;
 import com.victor.kochnev.dmsserver.common.security.SecurityUserService;
@@ -8,7 +10,7 @@ import com.victor.kochnev.dmsserver.consultation.infra.ConsultationModelReposito
 import com.victor.kochnev.dmsserver.consultation.infra.ConsultationSlotModelRepository;
 import com.victor.kochnev.dmsserver.consultation.infra.WorkingTimeModelRepository;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationModel;
-import com.victor.kochnev.dmsserver.profile.model.DoctorProfileModel;
+import com.victor.kochnev.dmsserver.consultation.model.ConsultationSlotModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -56,14 +58,15 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
     }
 
     @Override
-    public List<DoctorProfileModel> findConsultationSlots(ConsultationSlotsFilterDto filterDto) {
-        return List.of();
+    public ModelsResponseDto<ConsultationSlotModel> findConsultationSlots(ModelsRequestDto<ConsultationSlotsFilterDto> requestDto) {
+        List<ConsultationSlotModel> slots = consultationSlotModelRepository.findAllByFilters(requestDto.getFilters());
+        return new ModelsResponseDto<>(slots);
     }
 
     @Override
-    public ConsultationsResponse getCurrentUserConsultations() {
+    public ModelsResponseDto<ConsultationModel> getCurrentUserConsultations() {
         var currentUserId = securityUserService.getCurrentUser().getId();
         var consultations = consultationModelRepository.findByPatientIdOrDoctorId(currentUserId, currentUserId);
-        return new ConsultationsResponse(consultations);
+        return new ModelsResponseDto<>(consultations);
     }
 }
