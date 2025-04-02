@@ -26,7 +26,9 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
 
     @Override
     public ConsultationModel create(ConsultationModel consultation) {
-        var workingTimes = workingTimeModelRepository.findAllByUserId(consultation.getDoctor().getId());
+        var consultationSlot = consultationSlotModelRepository.getById(consultation.getConsultationSlot().getId());
+
+        var workingTimes = workingTimeModelRepository.findAllByUserId(consultationSlot.getUser().getId());
         var isDoctorWorkAtConsultationTime = workingTimes.stream()
                 .anyMatch(workingTime -> {
                     ZonedDateTime consultationStartDateTime = consultation.getStartDateTime();
@@ -38,7 +40,7 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
             throw new ModuleException("Doctor does not work at the consultation time");
         }
 
-        var optionalExistedConsultation = consultationModelRepository.findByDoctorIdAndStartDateTime(consultation.getDoctor().getId(), consultation.getStartDateTime());
+        var optionalExistedConsultation = consultationModelRepository.findByDoctorIdAndStartDateTime(consultationSlot.getUser().getId(), consultation.getStartDateTime());
         if(optionalExistedConsultation.isPresent()) {
             throw new ResourceAlreadyExistsException(ConsultationModel.class);
         }
@@ -46,7 +48,6 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
         var currentUserId = securityUserService.getCurrentUser().getId();
 
         var patientUserModel = userModelRepository.getById(currentUserId);
-        var consultationSlot = consultationSlotModelRepository.getById(consultation.getConsultationSlot().getId());
 
         consultation.setPatient(patientUserModel);
         consultation.setDoctor(consultationSlot.getUser());
@@ -60,8 +61,9 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
     }
 
     @Override
-    public List<ConsultationModel> getCurrentUserConsultations() {
+    public ConsultationsResponse getCurrentUserConsultations() {
         var currentUserId = securityUserService.getCurrentUser().getId();
-        return consultationModelRepository.findByPatientIdOrDoctorId(currentUserId, currentUserId);
+        var consultations = consultationModelRepository.findByPatientIdOrDoctorId(currentUserId, currentUserId);
+        return new ConsultationsResponse(consultations);
     }
 }

@@ -1,7 +1,0 @@
-POST http://localhost:8080/authentication/refresh
-Content-Type: application/json
-
-{
-  "refreshToken": "",
-  "rememberMe": false
-}
