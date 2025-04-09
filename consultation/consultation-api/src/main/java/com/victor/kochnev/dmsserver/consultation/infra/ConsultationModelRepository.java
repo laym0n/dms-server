@@ -13,4 +13,6 @@ public interface ConsultationModelRepository {
     List<ConsultationModel> findByPatientIdOrDoctorId(UUID patientId, UUID doctorId);
 
     Optional<ConsultationModel> findByDoctorIdAndStartDateTime(UUID doctorId, ZonedDateTime startDateTime);
+
+    List<ConsultationModel> findAllByFilters(ConsultationFiltersDto consultationFilters);
 }

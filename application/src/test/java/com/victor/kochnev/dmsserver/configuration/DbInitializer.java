@@ -1,7 +1,6 @@
 package com.victor.kochnev.dmsserver.configuration;
 
 import com.victor.kochnev.dmsserver.auth.model.UserRole;
-import com.victor.kochnev.dmsserver.consultation.model.WorkingTimeModel;
 import com.victor.kochnev.dmsserver.infra.data.entity.*;
 import com.victor.kochnev.dmsserver.infra.data.repository.*;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -62,26 +62,29 @@ public class DbInitializer implements CommandLineRunner {
         profileRepository.save(ProfileEntity.builder()
                 .user(userRepository.findById(patient.getId()).get())
                 .name("Виктор Кочнев")
+                .profileType(ProfileEntity.ProfileType.PATIENT)
                 .build());
 
         profileRepository.save(ProfileEntity.builder()
                 .user(userRepository.findById(doctor.getId()).get())
                 .name("Лапшин Никита")
+                .profileType(ProfileEntity.ProfileType.DOCTOR)
                 .build());
 
         profileRepository.save(ProfileEntity.builder()
                 .user(userRepository.findById(admin.getId()).get())
                 .name("Михайлов Елисей")
+                .profileType(ProfileEntity.ProfileType.PATIENT)
                 .build());
 
         workingTimeRepository.save(WorkingTimeEntity.builder()
                 .user(doctor)
                 .days(List.of(
-                        WorkingTimeModel.DayOfWeek.MONDAY,
-                        WorkingTimeModel.DayOfWeek.TUESDAY,
-                        WorkingTimeModel.DayOfWeek.WEDNESDAY,
-                        WorkingTimeModel.DayOfWeek.THURSDAY,
-                        WorkingTimeModel.DayOfWeek.FRIDAY
+                        DayOfWeek.MONDAY,
+                        DayOfWeek.TUESDAY,
+                        DayOfWeek.WEDNESDAY,
+                        DayOfWeek.THURSDAY,
+                        DayOfWeek.FRIDAY
                 ))
                 .startTime(LocalTime.of(9, 0))
                 .endTime(LocalTime.of(18, 0))

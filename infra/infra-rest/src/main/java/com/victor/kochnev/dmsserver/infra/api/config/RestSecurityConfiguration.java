@@ -38,11 +38,12 @@ public class RestSecurityConfiguration implements WebMvcConfigurer {
         var filter = jwtAuthenticationFilter();
 
         return http
-                .securityMatcher("/profile", "/authentication/**", "/consultation/**", "/autocomplete/**")
+                .securityMatcher("/profile/**", "/authentication/**", "/consultation/**", "/autocomplete/**", "/consultationslot/**")
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/authentication/**", "/autocomplete/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/profile").permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/profile/**", "/consultation/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/profile/**", "/consultationslot/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/profile/**", "/consultation/**", "/consultationslot/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/profile/*", "/consultationslot/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/profile").authenticated()
                         .requestMatchers("/consultation/**").authenticated()
                 )

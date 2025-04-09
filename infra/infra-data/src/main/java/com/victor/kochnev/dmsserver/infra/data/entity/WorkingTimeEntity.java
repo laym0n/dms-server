@@ -1,6 +1,5 @@
 package com.victor.kochnev.dmsserver.infra.data.entity;
 
-import com.victor.kochnev.dmsserver.consultation.model.WorkingTimeModel;
 import com.victor.kochnev.dmsserver.infra.data.entity.converter.WorkingTimeModelDayOfWeekCollectionConverter;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -8,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.time.DayOfWeek;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Collection;
@@ -21,7 +21,7 @@ import java.util.Collection;
 public class WorkingTimeEntity extends BaseEntity {
     @Column(name = "days", nullable = false)
     @Convert(converter = WorkingTimeModelDayOfWeekCollectionConverter.class)
-    private Collection<WorkingTimeModel.DayOfWeek> days;
+    private Collection<DayOfWeek> days;
     @Column(name = "start_time", nullable = false)
     private LocalTime startTime;
     @Column(name = "end_time", nullable = false)

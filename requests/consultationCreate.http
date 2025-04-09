@@ -2,8 +2,8 @@ POST http://localhost:8081/consultation
 Content-Type: application/json
 
 {
-  "startDateTime": "2025-04-02T13:00:00.000+03:00",
+  "startDateTime": "2025-04-08T13:00:00.000+03:00",
   "consultationSlot": {
-    "id": "6cccf820-9941-4cc6-969b-614c2ac53713"
+    "id": "f96bbf39-ccdf-430d-99d3-881cfd4bc288"
   }
 }

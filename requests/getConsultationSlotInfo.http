@@ -1,0 +1,3 @@
+GET http://localhost:8081/consultationslot/f96bbf39-ccdf-430d-99d3-881cfd4bc288?appointmentStartDateTime=2025-04-08&
+    appointmentEndDateTime=2025-04-08
+Content-Type: application/json

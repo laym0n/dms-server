@@ -1,11 +1,13 @@
 package com.victor.kochnev.dmsserver.infra.data.adapter;
 
+import com.victor.kochnev.dmsserver.consultation.infra.ConsultationFiltersDto;
 import com.victor.kochnev.dmsserver.consultation.infra.ConsultationModelRepository;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationModel;
 import com.victor.kochnev.dmsserver.infra.data.converter.ConsultationEntityMapper;
 import com.victor.kochnev.dmsserver.infra.data.repository.ConsultationRepository;
 import com.victor.kochnev.dmsserver.infra.data.repository.ConsultationSlotRepository;
 import com.victor.kochnev.dmsserver.infra.data.repository.UserRepository;
+import com.victor.kochnev.dmsserver.infra.data.specification.ConsultationSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,5 +56,15 @@ public class ConsultationModelRepositoryImpl implements ConsultationModelReposit
     public Optional<ConsultationModel> findByDoctorIdAndStartDateTime(UUID doctorId, ZonedDateTime startDateTime) {
         return consultationRepository.findByDoctorIdAndStartDateTime(doctorId, startDateTime)
                 .map(consultationEntityMapper::mapToModel);
+    }
+
+    @Override
+    @Transactional
+    public List<ConsultationModel> findAllByFilters(ConsultationFiltersDto consultationFilters) {
+        var spec = ConsultationSpecification.byFilters(consultationFilters);
+        return consultationRepository.findAll(spec)
+                .stream()
+                .map(consultationEntityMapper::mapToModel)
+                .toList();
     }
 }
