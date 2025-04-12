@@ -15,7 +15,7 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(webSocketHandler, "/myHandler")
+        registry.addHandler(webSocketHandler, "/p2p-signaling")
                 .setAllowedOrigins("*");
     }
 }

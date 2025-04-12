@@ -108,6 +108,11 @@
                 <artifactId>infra-p2p-signaling</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>infra-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>org.mapstruct</groupId>

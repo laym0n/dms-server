@@ -4,7 +4,7 @@ import com.victor.kochnev.dmsserver.auth.api.AuthenticationFacade;
 import com.victor.kochnev.dmsserver.auth.model.AuthenticateResponse;
 import com.victor.kochnev.dmsserver.auth.model.AuthenticationRequest;
 import com.victor.kochnev.dmsserver.auth.model.JwtTokenDto;
-import com.victor.kochnev.dmsserver.infra.api.security.JwtCookieUtils;
+import com.victor.kochnev.dmsserver.infra.common.security.JwtCookieUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;

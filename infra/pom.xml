@@ -10,9 +10,10 @@
     <artifactId>infra</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>infra-rest</module>
+        <module>infra-common</module>
         <module>infra-data</module>
         <module>infra-p2p-signaling</module>
+        <module>infra-rest</module>
     </modules>
 
 </project>

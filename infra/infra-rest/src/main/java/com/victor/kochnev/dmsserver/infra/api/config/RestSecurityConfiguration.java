@@ -1,7 +1,6 @@
 package com.victor.kochnev.dmsserver.infra.api.config;
 
-import com.victor.kochnev.dmsserver.auth.api.AuthenticationFacade;
-import com.victor.kochnev.dmsserver.infra.api.security.JwtAuthenticationFilter;
+import com.victor.kochnev.dmsserver.infra.common.security.JwtAuthenticationFilterBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -23,11 +22,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 @EnableWebSecurity
-@Order(Ordered.HIGHEST_PRECEDENCE)
 public class RestSecurityConfiguration implements WebMvcConfigurer {
 
     @Autowired
-    private AuthenticationFacade authenticationFacade;
+    private JwtAuthenticationFilterBuilder jwtAuthenticationFilterBuilder;
 
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -35,7 +33,7 @@ public class RestSecurityConfiguration implements WebMvcConfigurer {
         var expressionHandler = new DefaultHttpSecurityExpressionHandler();
         expressionHandler.setApplicationContext(context);
 
-        var filter = jwtAuthenticationFilter();
+        var filter = jwtAuthenticationFilterBuilder.build();
 
         return http
                 .securityMatcher("/profile/**", "/authentication/**", "/consultation/**", "/autocomplete/**", "/consultationslot/**")
@@ -57,23 +55,8 @@ public class RestSecurityConfiguration implements WebMvcConfigurer {
                 .build();
     }
 
-    @Bean
-    @Order(Ordered.LOWEST_PRECEDENCE)
-    public SecurityFilterChain denyAllSecurityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .securityMatcher("/**")
-                .cors(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth
-                        .anyRequest().denyAll()
-                ).build();
-    }
-
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**").allowedOriginPatterns("*").allowCredentials(true);
-    }
-
-    private JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(authenticationFacade);
     }
 }
