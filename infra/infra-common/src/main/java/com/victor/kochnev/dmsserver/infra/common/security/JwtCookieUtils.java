@@ -1,4 +1,4 @@
-package com.victor.kochnev.dmsserver.infra.api.security;
+package com.victor.kochnev.dmsserver.infra.common.security;
 
 import com.victor.kochnev.dmsserver.auth.model.AuthenticateResponse;
 import jakarta.servlet.http.Cookie;

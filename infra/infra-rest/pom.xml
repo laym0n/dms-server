@@ -11,6 +11,10 @@
     <dependencies>
         <dependency>
             <groupId>com.victor.kochnev.dmsserver</groupId>
+            <artifactId>infra-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.victor.kochnev.dmsserver</groupId>
             <artifactId>profile-domain</artifactId>
         </dependency>
         <dependency>
