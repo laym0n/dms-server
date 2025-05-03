@@ -19,3 +19,7 @@ app:
         access-token-duration: ${ev.app.rest.security.jwt.access-token-duration}
         refresh-token-duration: ${ev.app.rest.security.jwt.refresh-token-duration}
         refresh-token-remember-me-duration: ${ev.app.rest.security.jwt.refresh-token-remember-me-duration}
+infra:
+  bundlr:
+    proxy:
+      base-url: ${ev.infra.bundlr.proxy.base-url}

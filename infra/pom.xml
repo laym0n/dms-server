@@ -14,6 +14,7 @@
         <module>infra-data</module>
         <module>infra-p2p-signaling</module>
         <module>infra-rest</module>
+        <module>infra-bundlr-proxy</module>
     </modules>
 
 </project>

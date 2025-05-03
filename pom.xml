@@ -110,6 +110,11 @@
             </dependency>
             <dependency>
                 <groupId>com.victor.kochnev.dmsserver</groupId>
+                <artifactId>infra-bundlr-proxy</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.victor.kochnev.dmsserver</groupId>
                 <artifactId>infra-common</artifactId>
                 <version>${project.version}</version>
             </dependency>

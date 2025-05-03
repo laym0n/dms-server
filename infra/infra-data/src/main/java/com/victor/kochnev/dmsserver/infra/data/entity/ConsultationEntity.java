@@ -17,8 +17,6 @@ import java.time.ZonedDateTime;
 public class ConsultationEntity extends BaseEntity {
     @Column(name = "start_date_time", nullable = false)
     private ZonedDateTime startDateTime;
-    @Column(name = "consultation_result")
-    private String consultationResult;
     @ManyToOne
     @JoinColumn(name = "consultation_slot_id", nullable = false)
     private ConsultationSlotEntity consultationSlot;

@@ -7,11 +7,10 @@ import com.victor.kochnev.dmsserver.common.dto.RangeDto;
 import com.victor.kochnev.dmsserver.common.exception.ModuleException;
 import com.victor.kochnev.dmsserver.common.exception.ResourceAlreadyExistsException;
 import com.victor.kochnev.dmsserver.common.security.SecurityUserService;
+import com.victor.kochnev.dmsserver.consultation.dto.BlockchainRecord;
+import com.victor.kochnev.dmsserver.consultation.dto.ConsultationPrescriptionDto;
 import com.victor.kochnev.dmsserver.consultation.dto.ConsultationSlotInfoDto;
-import com.victor.kochnev.dmsserver.consultation.infra.ConsultationFiltersDto;
-import com.victor.kochnev.dmsserver.consultation.infra.ConsultationModelRepository;
-import com.victor.kochnev.dmsserver.consultation.infra.ConsultationSlotModelRepository;
-import com.victor.kochnev.dmsserver.consultation.infra.WorkingTimeModelRepository;
+import com.victor.kochnev.dmsserver.consultation.infra.*;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationModel;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationSlotModel;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +32,7 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
     private final ConsultationSlotModelRepository consultationSlotModelRepository;
     private final WorkingTimeModelRepository workingTimeModelRepository;
     private final SecurityUserService securityUserService;
+    private final BlockchainClient blockchainClient;
 
     @Override
     public ConsultationModel create(ConsultationModel consultation) {
@@ -63,6 +63,12 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
         consultation.setDoctor(consultationSlot.getUser());
         consultation.setConsultationSlot(consultationSlot);
         return consultationModelRepository.create(consultation);
+    }
+
+    @Override
+    public BlockchainRecord updatePrescription(UUID consultationId, ConsultationPrescriptionDto prescriptionDto) {
+        consultationModelRepository.getById(consultationId);
+        return blockchainClient.persist(consultationId, prescriptionDto);
     }
 
     @Override

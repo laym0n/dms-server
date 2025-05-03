@@ -1,5 +1,6 @@
 package com.victor.kochnev.dmsserver.consultation.infra;
 
+import com.victor.kochnev.dmsserver.common.exception.ResourceNotFoundException;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationModel;
 
 import java.time.ZonedDateTime;
@@ -15,4 +16,10 @@ public interface ConsultationModelRepository {
     Optional<ConsultationModel> findByDoctorIdAndStartDateTime(UUID doctorId, ZonedDateTime startDateTime);
 
     List<ConsultationModel> findAllByFilters(ConsultationFiltersDto consultationFilters);
+
+    Optional<ConsultationModel> findById(UUID consultationId);
+
+    default ConsultationModel getById(UUID consultationId) {
+        return findById(consultationId).orElseThrow(() -> new ResourceNotFoundException(ConsultationModel.class, "id", consultationId.toString()));
+    }
 }
