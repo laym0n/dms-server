@@ -14,8 +14,9 @@
             <artifactId>infra-common</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.victor.kochnev.dmsserver</groupId>
-            <artifactId>consultation-api</artifactId>
+            <groupId>org.reactivestreams</groupId>
+            <artifactId>reactive-streams</artifactId>
+            <version>1.0.4</version>
         </dependency>
     </dependencies>
 </project>

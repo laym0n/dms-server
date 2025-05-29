@@ -1,4 +1,4 @@
-package com.victor.kochnev.dmsserver.infra.api.dto;
+package com.victor.kochnev.dmsserver.infra.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotNull;
