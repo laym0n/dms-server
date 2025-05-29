@@ -4,6 +4,7 @@ import com.victor.kochnev.dmsserver.auth.infra.UserModelRepository;
 import com.victor.kochnev.dmsserver.common.dto.ModelsRequestDto;
 import com.victor.kochnev.dmsserver.common.dto.ModelsResponseDto;
 import com.victor.kochnev.dmsserver.common.dto.RangeDto;
+import com.victor.kochnev.dmsserver.common.exception.AccessNotPermittedException;
 import com.victor.kochnev.dmsserver.common.exception.ModuleException;
 import com.victor.kochnev.dmsserver.common.exception.ResourceAlreadyExistsException;
 import com.victor.kochnev.dmsserver.common.security.SecurityUserService;
@@ -118,5 +119,15 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
         consultationInfo.setConsultationSlotModel(consultationSlot);
         consultationInfo.setAppointmentDateTimes(appointmentDateTimes);
         return consultationInfo;
+    }
+
+    @Override
+    public ConsultationModel getInfoById(UUID consultationId) {
+        var consultation = consultationModelRepository.getById(consultationId);
+        var currentUserId = securityUserService.getCurrentUser().getId();
+        if (!currentUserId.equals(consultation.getDoctor().getId()) && !currentUserId.equals(consultation.getPatient().getId())) {
+            throw new AccessNotPermittedException();
+        }
+        return consultation;
     }
 }

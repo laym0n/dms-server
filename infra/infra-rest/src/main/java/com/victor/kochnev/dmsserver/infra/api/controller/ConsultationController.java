@@ -22,6 +22,12 @@ public class ConsultationController {
         return ResponseEntity.ok(consultationsResponse);
     }
 
+    @GetMapping("/consultation/{consultationId}")
+    public ResponseEntity<ConsultationModel> getConsultationInfo(@PathVariable(name = "consultationId") UUID consultationId) {
+        var consultationsResponse = consultationFacade.getInfoById(consultationId);
+        return ResponseEntity.ok(consultationsResponse);
+    }
+
     @PostMapping("/consultation")
     public ResponseEntity<ConsultationModel> create(@RequestBody ConsultationModel consultationModel) {
         var createConsultationModel = consultationFacade.create(consultationModel);

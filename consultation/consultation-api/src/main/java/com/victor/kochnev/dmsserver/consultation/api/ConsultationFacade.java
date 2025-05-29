@@ -20,4 +20,6 @@ public interface ConsultationFacade {
     ModelsResponseDto<ConsultationModel> getCurrentUserConsultations();
 
     ConsultationSlotInfoDto getConsultationSlotInfo(UUID id, ConsultationSlotInfoParams params);
+
+    ConsultationModel getInfoById(UUID consultationId);
 }

@@ -1,15 +1,14 @@
 package com.victor.kochnev.dmsserver.infra.common.security;
 
-import com.victor.kochnev.dmsserver.auth.api.AuthenticationFacade;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
 public class JwtAuthenticationFilterBuilder {
-    private final AuthenticationFacade authenticationFacade;
+    private final JwtCookieAuthenticationService jwtCookieAuthenticationService;
 
     public JwtAuthenticationFilter build() {
-        return new JwtAuthenticationFilter(authenticationFacade);
+        return new JwtAuthenticationFilter(jwtCookieAuthenticationService);
     }
 }
