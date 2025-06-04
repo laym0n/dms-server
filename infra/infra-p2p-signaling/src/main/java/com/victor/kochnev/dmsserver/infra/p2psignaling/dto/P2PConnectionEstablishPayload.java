@@ -13,6 +13,7 @@ public class P2PConnectionEstablishPayload {
     private ProfileModel sourceProfile;
     private String destinationSessionId;
     private UUID destinationUserId;
+    private UUID consultationId;
     private Map<String, Object> offer;
     private Map<String, Object> answer;
     private Map<String, Object> candidate;
