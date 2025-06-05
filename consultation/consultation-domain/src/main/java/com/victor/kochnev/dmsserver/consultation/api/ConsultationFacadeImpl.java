@@ -9,10 +9,7 @@ import com.victor.kochnev.dmsserver.common.exception.ModuleException;
 import com.victor.kochnev.dmsserver.common.exception.ResourceAlreadyExistsException;
 import com.victor.kochnev.dmsserver.common.security.SecurityUserService;
 import com.victor.kochnev.dmsserver.consultation.dto.ConsultationSlotInfoDto;
-import com.victor.kochnev.dmsserver.consultation.infra.ConsultationFiltersDto;
-import com.victor.kochnev.dmsserver.consultation.infra.ConsultationModelRepository;
-import com.victor.kochnev.dmsserver.consultation.infra.ConsultationSlotModelRepository;
-import com.victor.kochnev.dmsserver.consultation.infra.WorkingTimeModelRepository;
+import com.victor.kochnev.dmsserver.consultation.infra.*;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationModel;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationSlotModel;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +31,7 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
     private final ConsultationSlotModelRepository consultationSlotModelRepository;
     private final WorkingTimeModelRepository workingTimeModelRepository;
     private final SecurityUserService securityUserService;
+    private final MeetingClient meetingClient;
 
     @Override
     public ConsultationModel create(ConsultationModel consultation) {
@@ -63,6 +61,8 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
         consultation.setPatient(patientUserModel);
         consultation.setDoctor(consultationSlot.getUser());
         consultation.setConsultationSlot(consultationSlot);
+        var meetingData = meetingClient.createMeeting(consultation);
+        consultation.setMeetingData(meetingData);
         return consultationModelRepository.create(consultation);
     }
 

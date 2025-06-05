@@ -1,0 +1,113 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.victor.kochnev.dmsserver</groupId>
+        <artifactId>infra</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <artifactId>infra-zoom</artifactId>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.victor.kochnev.dmsserver</groupId>
+            <artifactId>consultation-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <id>generate-common-zoom-api</id>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi/zoom_api.json</inputSpec>
+
+                            <generatorName>java</generatorName>
+                            <library>webclient</library>
+
+                            <invokerPackage>com.victor.kochnev.dmsserver.infra.zoom.api.common.invoker</invokerPackage>
+                            <apiPackage>com.victor.kochnev.dmsserver.infra.zoom.api.common</apiPackage>
+                            <modelPackage>com.victor.kochnev.dmsserver.infra.zoom.api.common.dto</modelPackage>
+
+                            <apiNameSuffix>Client</apiNameSuffix>
+                            <modelNameSuffix>DTO</modelNameSuffix>
+
+                            <generateApis>true</generateApis>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateApiTests>false</generateApiTests>
+
+                            <generateModels>true</generateModels>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <generateModelTests>false</generateModelTests>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+
+                            <configOptions>
+                                <useJakartaEe>true</useJakartaEe>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <id>generate-auth-zoom-api</id>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/openapi/zoom_auth_api.json</inputSpec>
+
+                            <generatorName>java</generatorName>
+                            <library>webclient</library>
+
+                            <invokerPackage>com.victor.kochnev.dmsserver.infra.zoom.api.auth.invoker</invokerPackage>
+                            <apiPackage>com.victor.kochnev.dmsserver.infra.zoom.api.auth</apiPackage>
+                            <modelPackage>com.victor.kochnev.dmsserver.infra.zoom.api.auth.dto</modelPackage>
+
+                            <apiNameSuffix>Client</apiNameSuffix>
+                            <modelNameSuffix>DTO</modelNameSuffix>
+
+                            <generateApis>true</generateApis>
+                            <generateApiDocumentation>false</generateApiDocumentation>
+                            <generateApiTests>false</generateApiTests>
+
+                            <generateModels>true</generateModels>
+                            <generateModelDocumentation>false</generateModelDocumentation>
+                            <generateModelTests>false</generateModelTests>
+                            <generateSupportingFiles>true</generateSupportingFiles>
+                            <typeMappings>
+                                <typeMappings>integer=Long,int=Long</typeMappings>
+                            </typeMappings>
+
+                            <configOptions>
+                                <useJakartaEe>true</useJakartaEe>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <skipDefaultInterface>true</skipDefaultInterface>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>

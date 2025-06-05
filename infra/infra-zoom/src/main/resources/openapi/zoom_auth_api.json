@@ -1,0 +1,4206 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Get Started Fast with Zoom APIs",
+    "version": "1.0.0",
+    "description": "### Done-for-You Developer API Workflows\n\nDiscover programmatic workflows like authorization, creating non-login users, in-meeting control and more in this collection.\n\n---\n\n##### ⚡️ Pro Tips ⚡\n\n- Make sure to fork this collection as well as [the application envrionment(s)](https://www.postman.com/zoom-developer/workspace/zoom-public-workspace/environment/22097587-4429733d-7c72-4dbf-96de-2a50b546778c?action=share&creator=22097587&active-environment=22097587-4429733d-7c72-4dbf-96de-2a50b546778c) of your need prior to trying to initiate requests.\n    \n- Start with the **API Authorization & Authentication** folder to retrieve an access token. This is needed for successful requests to the subsequent endpoints.\n    \n- The _OAuth App_ type will offer the shortest \"time to first API call\" if you're new to the Zoom Developer platform and eager to see how things work!\n- As you explore and build the different Zoom app types, update the environment-level variables in your forked workspace to continue optimizing your workspace experience."
+  },
+  "servers": [
+    {
+      "url": ""
+    },
+    {
+      "url": "zoom.us"
+    },
+    {
+      "url": "{{baseUrl}}"
+    }
+  ],
+  "paths": {
+    "/": {
+      "parameters": [],
+      "get": {
+        "summary": "Easy OAuth 2.0 authorization & access",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/oauth/token": {
+      "parameters": [],
+      "post": {
+        "summary": "Refresh access token",
+        "security": [
+          {
+            "BasicAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "grant_type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Request user authorization PKCE",
+        "parameters": [
+          {
+            "name": "response_type",
+            "in": "query",
+            "required": false,
+            "example": "code",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "required": false,
+            "description": "OAuth application's Development or Production Client ID.",
+            "example": "{{oAuthDevClientId}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "required": false,
+            "description": "URI to handle successful user authorization. Must match with Development or Production Redirect URI in your OAuth app settings.\n",
+            "example": "{{oAuthDevRedirectUri}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "description": "(Optional) An opaque value that you can use to maintain state between the request and callback. The authorization server appends the state value to the redirect URI. This is also useful to prevent cross-site request forgery.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code_challenge",
+            "in": "query",
+            "required": false,
+            "description": "Required for PKCE. A challenge derived from the code verifier sent in the authorization request to verify against the code_verifier later.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code_challenge_method",
+            "in": "query",
+            "required": false,
+            "description": "Optional. A method that was used to derive the code challenge. Defaults to \"plain\" if not present in the request. Code verifier transformation method is \"S256\" or \"plain\".\n",
+            "example": "S256",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/oauth/revoke": {
+      "parameters": [],
+      "post": {
+        "summary": "Revoke an access token",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "description": "The string Basic with your Client ID and Client Secret separated with colon (:), Base64-encoded.",
+            "example": "Basic [Client_ID:Client_Secret Base64-encoded]",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/x-www-form-urlencoded",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/oauth/authorize": {
+      "parameters": [],
+      "get": {
+        "summary": "Request user authorization",
+        "parameters": [
+          {
+            "name": "response_type",
+            "in": "query",
+            "required": false,
+            "example": "code",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "client_id",
+            "in": "query",
+            "required": false,
+            "description": "OAuth application's Development or Production Client ID.",
+            "example": "{{oAuthDevClientId}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "redirect_uri",
+            "in": "query",
+            "required": false,
+            "description": "URI to handle successful user authorization. Must match with Development or Production Redirect URI in your OAuth app settings.\n",
+            "example": "{{oAuthDevRedirectUri}}",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "description": "(Optional) An opaque value that you can use to maintain state between the request and callback. The authorization server appends the state value to the redirect URI. This is also useful to prevent cross-site request forgery.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code_challenge",
+            "in": "query",
+            "required": false,
+            "description": "(Optional, but required if using PKCE) A challenge derived from the code verifier sent in the authorization request to verify against the code_verifier later.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "code_challenge_method",
+            "in": "query",
+            "required": false,
+            "description": "(Optional) A method that was used to derive the code challenge. Defaults to \"plain\" if not present in the request. Code verifier transformation method is \"S256\" or \"plain\".\n",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/{userId}": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get a user",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/oauth/devicecode": {
+      "parameters": [],
+      "post": {
+        "summary": "POST Device Authorization",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": false,
+            "description": "The string Basic with your Client ID and Client Secret separated with colon (:), Base64-encoded.",
+            "example": "Basic [Client_ID:Client_Secret Base64-encoded]",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/x-www-form-urlencoded",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {}
+      }
+    },
+    "/users/{userId}/meetings": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The user ID or email address of the user. For user-level apps, pass the `me` value.",
+          "example": "6dfgdfgdg444447b0egga",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Create a meeting",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "**HTTP Status Code:** `201`<br>\nMeeting created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "assistant_id": {
+                      "type": "string"
+                    },
+                    "host_email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "registration_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "agenda": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "duration": {
+                      "type": "integer"
+                    },
+                    "h323_password": {
+                      "type": "string",
+                      "format": "color"
+                    },
+                    "join_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "occurrences": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "string",
+                            "format": "style"
+                          }
+                        }
+                      }
+                    },
+                    "password": {
+                      "type": "string",
+                      "format": "color"
+                    },
+                    "pmi": {
+                      "type": "integer"
+                    },
+                    "pre_schedule": {
+                      "type": "boolean"
+                    },
+                    "recurrence": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "integer"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "end_times": {
+                          "type": "integer"
+                        },
+                        "monthly_day": {
+                          "type": "integer"
+                        },
+                        "monthly_week": {
+                          "type": "integer"
+                        },
+                        "monthly_week_day": {
+                          "type": "integer"
+                        },
+                        "repeat_interval": {
+                          "type": "integer"
+                        },
+                        "weekly_days": {
+                          "type": "string",
+                          "format": "utc-millisec"
+                        }
+                      }
+                    },
+                    "settings": {
+                      "type": "object",
+                      "properties": {
+                        "allow_multiple_devices": {
+                          "type": "boolean"
+                        },
+                        "alternative_hosts": {
+                          "type": "string"
+                        },
+                        "alternative_hosts_email_notification": {
+                          "type": "boolean"
+                        },
+                        "alternative_host_update_polls": {
+                          "type": "boolean"
+                        },
+                        "approval_type": {
+                          "type": "integer"
+                        },
+                        "approved_or_denied_countries_or_regions": {
+                          "type": "object",
+                          "properties": {
+                            "approved_list": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "format": "style"
+                                }
+                              }
+                            },
+                            "denied_list": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "enable": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "format": "style"
+                                }
+                              }
+                            },
+                            "method": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "audio": {
+                          "type": "string"
+                        },
+                        "authentication_domains": {
+                          "type": "string"
+                        },
+                        "authentication_exception": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string",
+                                "format": "style"
+                              }
+                            }
+                          }
+                        },
+                        "authentication_name": {
+                          "type": "string"
+                        },
+                        "authentication_option": {
+                          "type": "string"
+                        },
+                        "auto_recording": {
+                          "type": "string"
+                        },
+                        "breakout_room": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "format": "style"
+                                }
+                              }
+                            },
+                            "rooms": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "calendar_type": {
+                          "type": "integer"
+                        },
+                        "close_registration": {
+                          "type": "boolean"
+                        },
+                        "cn_meeting": {
+                          "type": "boolean"
+                        },
+                        "contact_email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "contact_name": {
+                          "type": "string"
+                        },
+                        "custom_keys": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string",
+                                "format": "style"
+                              }
+                            }
+                          }
+                        },
+                        "email_notification": {
+                          "type": "boolean"
+                        },
+                        "encryption_type": {
+                          "type": "string"
+                        },
+                        "enforce_login": {
+                          "type": "boolean"
+                        },
+                        "enforce_login_domains": {
+                          "type": "string"
+                        },
+                        "focus_mode": {
+                          "type": "boolean"
+                        },
+                        "global_dial_in_countries": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string",
+                                "format": "style"
+                              }
+                            }
+                          }
+                        },
+                        "global_dial_in_numbers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "host_video": {
+                          "type": "boolean"
+                        },
+                        "in_meeting": {
+                          "type": "boolean"
+                        },
+                        "jbh_time": {
+                          "type": "integer"
+                        },
+                        "join_before_host": {
+                          "type": "boolean"
+                        },
+                        "language_interpretation": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "format": "style"
+                                }
+                              }
+                            },
+                            "interpreters": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "meeting_authentication": {
+                          "type": "boolean"
+                        },
+                        "mute_upon_entry": {
+                          "type": "boolean"
+                        },
+                        "participant_video": {
+                          "type": "boolean"
+                        },
+                        "private_meeting": {
+                          "type": "boolean"
+                        },
+                        "registrants_confirmation_email": {
+                          "type": "boolean"
+                        },
+                        "registrants_email_notification": {
+                          "type": "boolean"
+                        },
+                        "registration_type": {
+                          "type": "integer"
+                        },
+                        "show_share_button": {
+                          "type": "boolean"
+                        },
+                        "use_pmi": {
+                          "type": "boolean"
+                        },
+                        "waiting_room": {
+                          "type": "boolean"
+                        },
+                        "watermark": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "start_time": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "start_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "timezone": {
+                      "type": "string"
+                    },
+                    "topic": {
+                      "type": "string"
+                    },
+                    "tracking_fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "string"
+                          },
+                          "visible": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "type": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "300": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `300`<br>\nInvalid enforce_login_domains, separate multiple domains by semicolon.<br>\nA maximum of {rateLimitNumber} meetings can be created/updated for a single user in one day.\n"
+          },
+          "400": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `400` **Bad Request**<br>\n**Error Code:** `3000`<br> \n* Instant meetings do not support the schedule_for parameter; you cannot schedule an instant meeting for another user.<br>\n* Users in '{0}' have been blocked from joining meetings"
+          },
+          "404": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `404` **Not Found**<br>\nUser not found.<br>\n\n**Error Code:** `1001`<br> User {userId} not exist or not belong to this account.\n"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agenda": {
+                    "type": "string"
+                  },
+                  "default_password": {
+                    "type": "boolean"
+                  },
+                  "duration": {
+                    "type": "integer"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "color"
+                  },
+                  "pre_schedule": {
+                    "type": "boolean"
+                  },
+                  "recurrence": {
+                    "type": "object",
+                    "properties": {
+                      "end_date_time": {
+                        "type": "string",
+                        "format": "date-time"
+                      },
+                      "end_times": {
+                        "type": "integer"
+                      },
+                      "monthly_day": {
+                        "type": "integer"
+                      },
+                      "monthly_week": {
+                        "type": "integer"
+                      },
+                      "monthly_week_day": {
+                        "type": "integer"
+                      },
+                      "repeat_interval": {
+                        "type": "integer"
+                      },
+                      "type": {
+                        "type": "integer"
+                      },
+                      "weekly_days": {
+                        "type": "string",
+                        "format": "utc-millisec"
+                      }
+                    }
+                  },
+                  "schedule_for": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "additional_data_center_regions": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "allow_multiple_devices": {
+                        "type": "boolean"
+                      },
+                      "alternative_hosts": {
+                        "type": "string"
+                      },
+                      "alternative_hosts_email_notification": {
+                        "type": "boolean"
+                      },
+                      "approval_type": {
+                        "type": "integer"
+                      },
+                      "approved_or_denied_countries_or_regions": {
+                        "type": "object",
+                        "properties": {
+                          "approved_list": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "denied_list": {
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "enable": {
+                            "type": "boolean"
+                          },
+                          "method": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "audio": {
+                        "type": "string"
+                      },
+                      "audio_conference_info": {
+                        "type": "string"
+                      },
+                      "authentication_domains": {
+                        "type": "string"
+                      },
+                      "authentication_exception": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "type": "string",
+                              "format": "email"
+                            },
+                            "name": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      },
+                      "authentication_option": {
+                        "type": "string"
+                      },
+                      "auto_recording": {
+                        "type": "string"
+                      },
+                      "breakout_room": {
+                        "type": "object",
+                        "properties": {
+                          "enable": {
+                            "type": "boolean"
+                          },
+                          "rooms": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "participants": {
+                                  "type": "array",
+                                  "items": {
+                                    "type": "string",
+                                    "format": "email"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "calendar_type": {
+                        "type": "integer"
+                      },
+                      "close_registration": {
+                        "type": "boolean"
+                      },
+                      "contact_email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "contact_name": {
+                        "type": "string"
+                      },
+                      "email_notification": {
+                        "type": "boolean"
+                      },
+                      "encryption_type": {
+                        "type": "string"
+                      },
+                      "focus_mode": {
+                        "type": "boolean"
+                      },
+                      "global_dial_in_countries": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "host_video": {
+                        "type": "boolean"
+                      },
+                      "jbh_time": {
+                        "type": "integer"
+                      },
+                      "join_before_host": {
+                        "type": "boolean"
+                      },
+                      "language_interpretation": {
+                        "type": "object",
+                        "properties": {
+                          "enable": {
+                            "type": "boolean"
+                          },
+                          "interpreters": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "email": {
+                                  "type": "string",
+                                  "format": "email"
+                                },
+                                "languages": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "meeting_authentication": {
+                        "type": "boolean"
+                      },
+                      "meeting_invitees": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "type": "string",
+                              "format": "email"
+                            }
+                          }
+                        }
+                      },
+                      "mute_upon_entry": {
+                        "type": "boolean"
+                      },
+                      "participant_video": {
+                        "type": "boolean"
+                      },
+                      "private_meeting": {
+                        "type": "boolean"
+                      },
+                      "registrants_confirmation_email": {
+                        "type": "boolean"
+                      },
+                      "registrants_email_notification": {
+                        "type": "boolean"
+                      },
+                      "registration_type": {
+                        "type": "integer"
+                      },
+                      "show_share_button": {
+                        "type": "boolean"
+                      },
+                      "use_pmi": {
+                        "type": "boolean"
+                      },
+                      "waiting_room": {
+                        "type": "boolean"
+                      },
+                      "watermark": {
+                        "type": "boolean"
+                      },
+                      "host_save_video_order": {
+                        "type": "boolean"
+                      },
+                      "alternative_host_update_polls": {
+                        "type": "boolean"
+                      }
+                    }
+                  },
+                  "start_time": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "template_id": {
+                    "type": "string"
+                  },
+                  "timezone": {
+                    "type": "string"
+                  },
+                  "topic": {
+                    "type": "string"
+                  },
+                  "tracking_fields": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List meetings",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "description": "The type of meeting: \n* `scheduled` — All valid previous (unexpired) meetings, live meetings, and upcoming scheduled meetings. \n* `live` — All the ongoing meetings. \n* `upcoming` — All upcoming meetings, including live meetings. \n* `upcoming_meetings` — All upcoming meetings, including live meetings. \n* `previous_meetings` — All the previous meetings.",
+            "example": "scheduled",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "description": "The number of records returned within a single API call.",
+            "example": "30",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "next_page_token",
+            "in": "query",
+            "required": false,
+            "description": "The next page token is used to paginate through large result sets. A next page token will be returned whenever the set of available results exceeds the current page size. The expiration period for this token is 15 minutes.",
+            "example": "IAfJX3jsOLW7w3dokmFl84zOa0MAVGyMEB2",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "required": false,
+            "description": "The page number of the current page in the returned records.",
+            "example": "1",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "**HTTP Status Code:** `200`<br>\nList of meeting objects returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "next_page_token": {
+                      "type": "string"
+                    },
+                    "page_count": {
+                      "type": "integer"
+                    },
+                    "page_number": {
+                      "type": "integer"
+                    },
+                    "page_size": {
+                      "type": "integer"
+                    },
+                    "total_records": {
+                      "type": "integer"
+                    },
+                    "meetings": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "agenda": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "duration": {
+                            "type": "integer"
+                          },
+                          "host_id": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "integer"
+                          },
+                          "join_url": {
+                            "type": "string",
+                            "format": "uri"
+                          },
+                          "pmi": {
+                            "type": "string",
+                            "format": "utc-millisec"
+                          },
+                          "start_time": {
+                            "type": "string",
+                            "format": "date-time"
+                          },
+                          "timezone": {
+                            "type": "string"
+                          },
+                          "topic": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          },
+                          "uuid": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request \n\n **Error Code:** `3161` <br>\nMeeting hosting and scheduling capabilities are not allowed for your user account."
+          },
+          "404": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `404`<br>\nUser ID not found.<br>\n**Error Code:** `1001`<br>\nUser {userId} not exist or not belong to this account.<br>"
+          }
+        }
+      }
+    },
+    "/meetings/{meetingId}": {
+      "parameters": [
+        {
+          "name": "meetingId",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The meeting's ID. \n\n When storing this value in your database, you must store it as a long format integer and **not** an integer. Meeting IDs can exceed 10 digits.",
+          "example": "85746065",
+          "schema": {
+            "type": "integer"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get a meeting",
+        "parameters": [
+          {
+            "name": "occurrence_id",
+            "in": "query",
+            "required": false,
+            "description": "Meeting Occurrence ID. Provide this field to view meeting details of a particular occurrence of the [recurring meeting](https://support.zoom.us/hc/en-us/articles/214973206-Scheduling-Recurring-Meetings).",
+            "example": "1648194360000",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "show_previous_occurrences",
+            "in": "query",
+            "required": false,
+            "description": "Set the value of this field to `true` if you would like to view meeting details of all previous occurrences of a [recurring meeting](https://support.zoom.us/hc/en-us/articles/214973206-Scheduling-Recurring-Meetings). ",
+            "example": "true",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "**HTTP Status Code:** `200`<br>\nMeeting object returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "assistant_id": {
+                      "type": "string"
+                    },
+                    "host_email": {
+                      "type": "string",
+                      "format": "email"
+                    },
+                    "host_id": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "integer"
+                    },
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "agenda": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "duration": {
+                      "type": "integer"
+                    },
+                    "encrypted_password": {
+                      "type": "string"
+                    },
+                    "h323_password": {
+                      "type": "string",
+                      "format": "color"
+                    },
+                    "join_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "occurrences": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "value": {
+                            "type": "string",
+                            "format": "style"
+                          }
+                        }
+                      }
+                    },
+                    "password": {
+                      "type": "string",
+                      "format": "color"
+                    },
+                    "pmi": {
+                      "type": "string",
+                      "format": "utc-millisec"
+                    },
+                    "pre_schedule": {
+                      "type": "boolean"
+                    },
+                    "recurrence": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "integer"
+                        },
+                        "end_date_time": {
+                          "type": "string",
+                          "format": "date-time"
+                        },
+                        "end_times": {
+                          "type": "integer"
+                        },
+                        "monthly_day": {
+                          "type": "integer"
+                        },
+                        "monthly_week": {
+                          "type": "integer"
+                        },
+                        "monthly_week_day": {
+                          "type": "integer"
+                        },
+                        "repeat_interval": {
+                          "type": "integer"
+                        },
+                        "weekly_days": {
+                          "type": "string",
+                          "format": "utc-millisec"
+                        }
+                      }
+                    },
+                    "settings": {
+                      "type": "object",
+                      "properties": {
+                        "allow_multiple_devices": {
+                          "type": "boolean"
+                        },
+                        "alternative_hosts": {
+                          "type": "string"
+                        },
+                        "alternative_hosts_email_notification": {
+                          "type": "boolean"
+                        },
+                        "alternative_host_update_polls": {
+                          "type": "boolean"
+                        },
+                        "approval_type": {
+                          "type": "integer"
+                        },
+                        "approved_or_denied_countries_or_regions": {
+                          "type": "object",
+                          "properties": {
+                            "approved_list": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "format": "style"
+                                }
+                              }
+                            },
+                            "denied_list": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "enable": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "format": "style"
+                                }
+                              }
+                            },
+                            "method": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "audio": {
+                          "type": "string"
+                        },
+                        "authentication_domains": {
+                          "type": "string"
+                        },
+                        "authentication_exception": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string",
+                                "format": "style"
+                              }
+                            }
+                          }
+                        },
+                        "authentication_name": {
+                          "type": "string"
+                        },
+                        "authentication_option": {
+                          "type": "string"
+                        },
+                        "auto_recording": {
+                          "type": "string"
+                        },
+                        "breakout_room": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "format": "style"
+                                }
+                              }
+                            },
+                            "rooms": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "calendar_type": {
+                          "type": "integer"
+                        },
+                        "close_registration": {
+                          "type": "boolean"
+                        },
+                        "cn_meeting": {
+                          "type": "boolean"
+                        },
+                        "contact_email": {
+                          "type": "string",
+                          "format": "email"
+                        },
+                        "contact_name": {
+                          "type": "string"
+                        },
+                        "custom_keys": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string",
+                                "format": "style"
+                              }
+                            }
+                          }
+                        },
+                        "email_notification": {
+                          "type": "boolean"
+                        },
+                        "encryption_type": {
+                          "type": "string"
+                        },
+                        "enforce_login": {
+                          "type": "boolean"
+                        },
+                        "enforce_login_domains": {
+                          "type": "string"
+                        },
+                        "focus_mode": {
+                          "type": "boolean"
+                        },
+                        "global_dial_in_countries": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string",
+                                "format": "style"
+                              }
+                            }
+                          }
+                        },
+                        "global_dial_in_numbers": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "host_video": {
+                          "type": "boolean"
+                        },
+                        "in_meeting": {
+                          "type": "boolean"
+                        },
+                        "jbh_time": {
+                          "type": "integer"
+                        },
+                        "join_before_host": {
+                          "type": "boolean"
+                        },
+                        "language_interpretation": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string",
+                                  "format": "style"
+                                }
+                              }
+                            },
+                            "interpreters": {
+                              "type": "object",
+                              "properties": {
+                                "value": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "meeting_authentication": {
+                          "type": "boolean"
+                        },
+                        "mute_upon_entry": {
+                          "type": "boolean"
+                        },
+                        "participant_video": {
+                          "type": "boolean"
+                        },
+                        "private_meeting": {
+                          "type": "boolean"
+                        },
+                        "registrants_confirmation_email": {
+                          "type": "boolean"
+                        },
+                        "registrants_email_notification": {
+                          "type": "boolean"
+                        },
+                        "registration_type": {
+                          "type": "integer"
+                        },
+                        "show_share_button": {
+                          "type": "boolean"
+                        },
+                        "use_pmi": {
+                          "type": "boolean"
+                        },
+                        "waiting_room": {
+                          "type": "boolean"
+                        },
+                        "watermark": {
+                          "type": "boolean"
+                        }
+                      }
+                    },
+                    "start_time": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "start_url": {
+                      "type": "string",
+                      "format": "uri"
+                    },
+                    "status": {
+                      "type": "string"
+                    },
+                    "timezone": {
+                      "type": "string"
+                    },
+                    "topic": {
+                      "type": "string"
+                    },
+                    "tracking_fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "string"
+                          },
+                          "visible": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    },
+                    "type": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `400`<br>\n**Error Code:** `1010`<br>\nUser not found on this account: {accountId}.<br>**Error Code:** `3000`<br>\nCannot access webinar info. \n\n **Error Code:** `3161` <br>\nMeeting hosting and scheduling capabilities are not allowed fo"
+          },
+          "404": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `404`<br>\nMeeting not found.<br>\n**Error Code:** `1001`<br>\nUser not exist: {userId}.<br>**Error Code:** `3001`<br>\nMeeting {meetingId} is not found or has expired."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a meeting",
+        "parameters": [
+          {
+            "name": "occurrence_id",
+            "in": "query",
+            "required": false,
+            "example": "1648194360000",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "schedule_for_reminder",
+            "in": "query",
+            "required": false,
+            "example": "true",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "cancel_meeting_reminder",
+            "in": "query",
+            "required": false,
+            "example": "true",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code**: `204` <br>\nMeeting deleted."
+          },
+          "400": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code**: `400` <br>\n**Error Code**: `1010` <br>\nUser does not belong to this account: {accountId}.<br>\n**Error Code**: `3000` <br>Cannot access meeting information.<br>Invalid occurrence_id.<br>\n**Error Code**: `3002` <br>\nSorry, you cannot d"
+          },
+          "404": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code**: `404` <br>\nMeeting not found.\n**Error Code**: `1001` <br>\nUser does not exist: {userId}.<br>\n**Error Code**: `3001` <br>\nMeeting with this {meetingId} is not found or has expired."
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a meeting",
+        "parameters": [
+          {
+            "name": "occurrence_id",
+            "in": "query",
+            "required": false,
+            "description": "Meeting occurrence id. Support change of agenda, start_time, duration, settings: {host_video, participant_video, join_before_host, mute_upon_entry, waiting_room, watermark, auto_recording}",
+            "example": "1648194360000",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `204`<br>\nMeeting updated."
+          },
+          "300": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**Error Code:** `300`<br>\nInvalid enforce_login_domains, separate multiple domains by semicolon.<br>\nA maximum of {rateLimitNumber} meetings can be created/updated for a single user in one day.\n"
+          },
+          "400": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `400`<br>\n**Error Code:** `1010`<br>\nUser not found on this account: {accountId}.<br>\n**Error Code:** `3000`<br>\nCannot access meeting information.<br>\n**Error Code:** `3003`<br>\nYou are not the meeting host.<br>\n**Error Code:** `300"
+          },
+          "404": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `404`<br>\nMeeting not found.<br>\n**Error Code:** `1001`<br>\nUser does not exist: {userId}.<br>\n**Error Code:** `3001`<br>\nA meeting with this {meetingId} is not found or has expired."
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "schedule_for": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "agenda": {
+                    "type": "string"
+                  },
+                  "duration": {
+                    "type": "integer"
+                  },
+                  "password": {
+                    "type": "string",
+                    "format": "color"
+                  },
+                  "pre_schedule": {
+                    "type": "boolean"
+                  },
+                  "recurrence": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "string",
+                        "format": "style"
+                      }
+                    }
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "start_time": {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  "template_id": {
+                    "type": "string"
+                  },
+                  "timezone": {
+                    "type": "string"
+                  },
+                  "topic": {
+                    "type": "string"
+                  },
+                  "tracking_fields": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "string",
+                          "format": "style"
+                        }
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "integer"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/webinars/{webinarId}": {
+      "parameters": [
+        {
+          "name": "webinarId",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The webinar's ID.",
+          "example": "<long>",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get a webinar",
+        "parameters": [
+          {
+            "name": "occurrence_id",
+            "in": "query",
+            "required": false,
+            "description": "Unique identifier for an occurrence of a recurring webinar. [Recurring webinars](https://support.zoom.us/hc/en-us/articles/216354763-How-to-Schedule-A-Recurring-Webinar) can have a maximum of 50 occurrences. When you create a recurring Webinar using [**Create a webinar**](/docs/api-reference/zoom-api/methods#operation/webinarCreate) API, you can retrieve the Occurrence ID from the response of the API call.",
+            "example": "<string>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "show_previous_occurrences",
+            "in": "query",
+            "required": false,
+            "description": "Set the value of this field to `true` if you would like to view Webinar details of all previous occurrences of a recurring Webinar.",
+            "example": "<boolean>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "**HTTP Status Code:** `200`  \n \nSuccess",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "host_email": {
+                      "type": "string"
+                    },
+                    "host_id": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "uuid": {
+                      "type": "string"
+                    },
+                    "agenda": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "duration": {
+                      "type": "string"
+                    },
+                    "join_url": {
+                      "type": "string"
+                    },
+                    "occurrences": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "duration": {
+                            "type": "string"
+                          },
+                          "occurrence_id": {
+                            "type": "string"
+                          },
+                          "start_time": {
+                            "type": "string"
+                          },
+                          "status": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "password": {
+                      "type": "string"
+                    },
+                    "encrypted_passcode": {
+                      "type": "string"
+                    },
+                    "h323_passcode": {
+                      "type": "string"
+                    },
+                    "recurrence": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "integer"
+                        },
+                        "end_date_time": {
+                          "type": "string"
+                        },
+                        "end_times": {
+                          "type": "integer"
+                        },
+                        "monthly_day": {
+                          "type": "string"
+                        },
+                        "monthly_week": {
+                          "type": "integer"
+                        },
+                        "monthly_week_day": {
+                          "type": "integer"
+                        },
+                        "repeat_interval": {
+                          "type": "string"
+                        },
+                        "weekly_days": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "settings": {
+                      "type": "object",
+                      "properties": {
+                        "allow_multiple_devices": {
+                          "type": "string"
+                        },
+                        "alternative_hosts": {
+                          "type": "string"
+                        },
+                        "alternative_host_update_polls": {
+                          "type": "string"
+                        },
+                        "approval_type": {
+                          "type": "integer"
+                        },
+                        "attendees_and_panelists_reminder_email_notification": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "audio": {
+                          "type": "string"
+                        },
+                        "audio_conference_info": {
+                          "type": "string"
+                        },
+                        "authentication_domains": {
+                          "type": "string"
+                        },
+                        "authentication_name": {
+                          "type": "string"
+                        },
+                        "authentication_option": {
+                          "type": "string"
+                        },
+                        "auto_recording": {
+                          "type": "string"
+                        },
+                        "close_registration": {
+                          "type": "string"
+                        },
+                        "contact_email": {
+                          "type": "string"
+                        },
+                        "contact_name": {
+                          "type": "string"
+                        },
+                        "email_language": {
+                          "type": "string"
+                        },
+                        "enforce_login": {
+                          "type": "string"
+                        },
+                        "enforce_login_domains": {
+                          "type": "string"
+                        },
+                        "follow_up_absentees_email_notification": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "follow_up_attendees_email_notification": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "integer"
+                            }
+                          }
+                        },
+                        "global_dial_in_countries": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "hd_video": {
+                          "type": "boolean"
+                        },
+                        "hd_video_for_attendees": {
+                          "type": "boolean"
+                        },
+                        "host_video": {
+                          "type": "string"
+                        },
+                        "language_interpretation": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "string"
+                            },
+                            "interpreters": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "languages": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "sign_language_interpretation": {
+                          "type": "object",
+                          "properties": {
+                            "enable": {
+                              "type": "string"
+                            },
+                            "interpreters": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "email": {
+                                    "type": "string"
+                                  },
+                                  "sign_language": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "panelist_authentication": {
+                          "type": "string"
+                        },
+                        "meeting_authentication": {
+                          "type": "string"
+                        },
+                        "add_watermark": {
+                          "type": "string"
+                        },
+                        "add_audio_watermark": {
+                          "type": "string"
+                        },
+                        "notify_registrants": {
+                          "type": "string"
+                        },
+                        "on_demand": {
+                          "type": "boolean"
+                        },
+                        "panelists_invitation_email_notification": {
+                          "type": "string"
+                        },
+                        "panelists_video": {
+                          "type": "string"
+                        },
+                        "post_webinar_survey": {
+                          "type": "string"
+                        },
+                        "practice_session": {
+                          "type": "boolean"
+                        },
+                        "question_and_answer": {
+                          "type": "object",
+                          "properties": {
+                            "allow_submit_questions": {
+                              "type": "string"
+                            },
+                            "allow_anonymous_questions": {
+                              "type": "string"
+                            },
+                            "answer_questions": {
+                              "type": "string"
+                            },
+                            "attendees_can_comment": {
+                              "type": "string"
+                            },
+                            "attendees_can_upvote": {
+                              "type": "string"
+                            },
+                            "allow_auto_reply": {
+                              "type": "string"
+                            },
+                            "auto_reply_text": {
+                              "type": "string"
+                            },
+                            "enable": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "registrants_confirmation_email": {
+                          "type": "string"
+                        },
+                        "registrants_email_notification": {
+                          "type": "string"
+                        },
+                        "registrants_restrict_number": {
+                          "type": "integer"
+                        },
+                        "registration_type": {
+                          "type": "integer"
+                        },
+                        "send_1080p_video_to_attendees": {
+                          "type": "boolean"
+                        },
+                        "show_share_button": {
+                          "type": "string"
+                        },
+                        "survey_url": {
+                          "type": "string"
+                        },
+                        "enable_session_branding": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "start_time": {
+                      "type": "string"
+                    },
+                    "start_url": {
+                      "type": "string"
+                    },
+                    "timezone": {
+                      "type": "string"
+                    },
+                    "topic": {
+                      "type": "string"
+                    },
+                    "tracking_fields": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "field": {
+                            "type": "string"
+                          },
+                          "value": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    },
+                    "type": {
+                      "type": "integer"
+                    },
+                    "is_simulive": {
+                      "type": "string"
+                    },
+                    "record_file_id": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `300` <br>\n Invalid webinar ID. <br>\n**Error Code:** `200` <br>\n Webinar plan is missing. You must subscribe to the webinar plan and enable webinars for this user to perform this action. <b"
+          },
+          "404": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `3001` <br>\n Webinar does not exist: {webinarId}. <br>\n"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete a webinar",
+        "parameters": [
+          {
+            "name": "occurrence_id",
+            "in": "query",
+            "required": false,
+            "description": "The meeting or webinar occurrence ID.",
+            "example": "<string>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cancel_webinar_reminder",
+            "in": "query",
+            "required": false,
+            "description": "`true` - Notify panelists and registrants about the webinar cancellation via email. \n\n`false` - Do not send any email notification to webinar registrants and panelists. \n\nThe default value of this field is `false`.",
+            "example": "<boolean>",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `204` <br>\n Webinar deleted."
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request \n\n **Error Code:** `1010` <br>\n User does not belong to this account:{accountId}.<br> <br>\n**Error Code:** `3002` <br>\n Sorry, you cannot delete this webinar since it is in progress.<br> <br>\n**Error Code:** `"
+          },
+          "404": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `404` <br>\n Not Found \n\n **Error Code:** `1001` <br>\n User {userId} does not exist or does not belong to this account.<br> <br>\n**Error Code:** `3001` <br>\n Webinar {webinarId} not found or has expired.<br> <br>\n"
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a webinar",
+        "parameters": [
+          {
+            "name": "occurrence_id",
+            "in": "query",
+            "required": false,
+            "description": "Webinar occurrence ID. Support change of agenda, start time, duration, and settings `host_video`, `panelist_video`, `hd_video, watermark`, `auto_recording`.",
+            "example": "<string>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `204`  \n \nWebinar updated."
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request \n\n **Error Code:** `1010` <br>\n User does not belong to this account: {accountId} <br>\n**Error Code:** `3003` <br>\n * You are not the meeting host. \n* Users in \"{0}\" have been blocked from joining meetings and"
+          },
+          "404": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `404` <br>\n Not Found \n\n **Error Code:** `1001` <br>\n User {userId} does not exist or does not belong to this account.<br> <br>\n**Error Code:** `3001` <br>\n Webinar {webinarId} not found or has expired.<br> <br>\n"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "agenda": {
+                    "type": "string"
+                  },
+                  "duration": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  },
+                  "schedule_for": {
+                    "type": "string"
+                  },
+                  "recurrence": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "integer"
+                      },
+                      "end_date_time": {
+                        "type": "string"
+                      },
+                      "end_times": {
+                        "type": "integer"
+                      },
+                      "monthly_day": {
+                        "type": "integer"
+                      },
+                      "monthly_week": {
+                        "type": "integer"
+                      },
+                      "monthly_week_day": {
+                        "type": "integer"
+                      },
+                      "repeat_interval": {
+                        "type": "string"
+                      },
+                      "weekly_days": {
+                        "type": "string",
+                        "format": "utc-millisec"
+                      }
+                    }
+                  },
+                  "settings": {
+                    "type": "object",
+                    "properties": {
+                      "allow_multiple_devices": {
+                        "type": "string"
+                      },
+                      "alternative_hosts": {
+                        "type": "string"
+                      },
+                      "alternative_host_update_polls": {
+                        "type": "string"
+                      },
+                      "approval_type": {
+                        "type": "integer"
+                      },
+                      "attendees_and_panelists_reminder_email_notification": {
+                        "type": "object",
+                        "properties": {
+                          "enable": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "audio": {
+                        "type": "string"
+                      },
+                      "audio_conference_info": {
+                        "type": "string"
+                      },
+                      "authentication_domains": {
+                        "type": "string"
+                      },
+                      "authentication_name": {
+                        "type": "string"
+                      },
+                      "authentication_option": {
+                        "type": "string"
+                      },
+                      "auto_recording": {
+                        "type": "string"
+                      },
+                      "close_registration": {
+                        "type": "string"
+                      },
+                      "contact_email": {
+                        "type": "string"
+                      },
+                      "contact_name": {
+                        "type": "string"
+                      },
+                      "email_language": {
+                        "type": "string"
+                      },
+                      "enforce_login": {
+                        "type": "string"
+                      },
+                      "enforce_login_domains": {
+                        "type": "string"
+                      },
+                      "follow_up_absentees_email_notification": {
+                        "type": "object",
+                        "properties": {
+                          "enable": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "follow_up_attendees_email_notification": {
+                        "type": "object",
+                        "properties": {
+                          "enable": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          }
+                        }
+                      },
+                      "global_dial_in_countries": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      },
+                      "hd_video": {
+                        "type": "boolean"
+                      },
+                      "hd_video_for_attendees": {
+                        "type": "boolean"
+                      },
+                      "host_video": {
+                        "type": "string"
+                      },
+                      "language_interpretation": {
+                        "type": "object",
+                        "properties": {
+                          "enable": {
+                            "type": "string"
+                          },
+                          "interpreters": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "email": {
+                                  "type": "string"
+                                },
+                                "languages": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "sign_language_interpretation": {
+                        "type": "object",
+                        "properties": {
+                          "enable": {
+                            "type": "string"
+                          },
+                          "interpreters": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "email": {
+                                  "type": "string"
+                                },
+                                "sign_language": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "panelist_authentication": {
+                        "type": "string"
+                      },
+                      "meeting_authentication": {
+                        "type": "string"
+                      },
+                      "add_watermark": {
+                        "type": "string"
+                      },
+                      "add_audio_watermark": {
+                        "type": "string"
+                      },
+                      "notify_registrants": {
+                        "type": "string"
+                      },
+                      "on_demand": {
+                        "type": "boolean"
+                      },
+                      "panelists_invitation_email_notification": {
+                        "type": "string"
+                      },
+                      "panelists_video": {
+                        "type": "string"
+                      },
+                      "post_webinar_survey": {
+                        "type": "string"
+                      },
+                      "practice_session": {
+                        "type": "boolean"
+                      },
+                      "question_and_answer": {
+                        "type": "object",
+                        "properties": {
+                          "allow_submit_questions": {
+                            "type": "string"
+                          },
+                          "allow_anonymous_questions": {
+                            "type": "string"
+                          },
+                          "answer_questions": {
+                            "type": "string"
+                          },
+                          "attendees_can_comment": {
+                            "type": "string"
+                          },
+                          "attendees_can_upvote": {
+                            "type": "string"
+                          },
+                          "allow_auto_reply": {
+                            "type": "string"
+                          },
+                          "auto_reply_text": {
+                            "type": "string"
+                          },
+                          "enable": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "registrants_confirmation_email": {
+                        "type": "string"
+                      },
+                      "registrants_email_notification": {
+                        "type": "string"
+                      },
+                      "registrants_restrict_number": {
+                        "type": "integer"
+                      },
+                      "registration_type": {
+                        "type": "integer"
+                      },
+                      "send_1080p_video_to_attendees": {
+                        "type": "boolean"
+                      },
+                      "show_share_button": {
+                        "type": "string"
+                      },
+                      "survey_url": {
+                        "type": "string"
+                      },
+                      "enable_session_branding": {
+                        "type": "string"
+                      }
+                    }
+                  },
+                  "start_time": {
+                    "type": "string"
+                  },
+                  "timezone": {
+                    "type": "string"
+                  },
+                  "topic": {
+                    "type": "string"
+                  },
+                  "tracking_fields": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "field": {
+                          "type": "string"
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "type": {
+                    "type": "integer"
+                  },
+                  "is_simulive": {
+                    "type": "string"
+                  },
+                  "record_file_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users/{userId}/webinars": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The user's user ID or email address. For user-level apps, pass the `me` value.",
+          "example": "<string>",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "List webinars",
+        "parameters": [
+          {
+            "name": "type",
+            "in": "query",
+            "required": false,
+            "description": "The type of webinar. \n* `scheduled` - All valid previous (unexpired) webinars, live webinars, and upcoming scheduled webinars. \n* `upcoming` - All upcoming webinars, including live webinars.",
+            "example": "scheduled",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "required": false,
+            "description": "The number of records returned within a single API call.",
+            "example": "30",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page_number",
+            "in": "query",
+            "required": false,
+            "description": "**Deprecated** We will no longer support this field in a future release. Instead, use the `next_page_token` for pagination.",
+            "example": "1",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "**HTTP Status Code:** `200`  \n \nList of webinar objects returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "next_page_token": {
+                      "type": "string"
+                    },
+                    "page_count": {
+                      "type": "string"
+                    },
+                    "page_number": {
+                      "type": "integer"
+                    },
+                    "page_size": {
+                      "type": "integer"
+                    },
+                    "total_records": {
+                      "type": "string"
+                    },
+                    "webinars": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "agenda": {
+                            "type": "string"
+                          },
+                          "created_at": {
+                            "type": "string"
+                          },
+                          "duration": {
+                            "type": "string"
+                          },
+                          "host_id": {
+                            "type": "string"
+                          },
+                          "id": {
+                            "type": "string"
+                          },
+                          "join_url": {
+                            "type": "string"
+                          },
+                          "start_time": {
+                            "type": "string"
+                          },
+                          "timezone": {
+                            "type": "string"
+                          },
+                          "topic": {
+                            "type": "string"
+                          },
+                          "type": {
+                            "type": "integer"
+                          },
+                          "uuid": {
+                            "type": "string"
+                          },
+                          "is_simulive": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `404` <br>\n Not Found \n\n **Error Code:** `1001` <br>\n User {userId} not exist or not belong to this account. <br>\n"
+          }
+        }
+      }
+    },
+    "/meetings/{meetingId}/token": {
+      "parameters": [
+        {
+          "name": "meetingId",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get meeting's closed caption token",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/live_meetings/{meetingId}/events": {
+      "parameters": [
+        {
+          "name": "meetingId",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "patch": {
+        "summary": "Start recording",
+        "parameters": [],
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "method": {
+                    "type": "string"
+                  },
+                  "params": {
+                    "type": "object",
+                    "properties": {
+                      "contacts": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "email": {
+                              "type": "string",
+                              "format": "email"
+                            },
+                            "id": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/users": {
+      "parameters": [],
+      "post": {
+        "summary": "custCreate User",
+        "parameters": [],
+        "responses": {},
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "action": {
+                    "type": "string"
+                  },
+                  "user_info": {
+                    "type": "object",
+                    "properties": {
+                      "email": {
+                        "type": "string",
+                        "format": "email"
+                      },
+                      "first_name": {
+                        "type": "string"
+                      },
+                      "last_name": {
+                        "type": "string"
+                      },
+                      "password": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "integer"
+                      },
+                      "feature": {
+                        "type": "object",
+                        "properties": {
+                          "zoom_phone": {
+                            "type": "boolean"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/meetings/{meetingId}/recordings": {
+      "parameters": [
+        {
+          "name": "meetingId",
+          "in": "path",
+          "required": true,
+          "description": "(Required) To get Cloud Recordings of a meeting, provide the meeting ID or meeting UUID. If the meeting ID is provided instead of UUID,the response will be for the latest meeting instance. \n\nTo get Cloud Recordings of a webinar, provide the webinar ID or the webinar UUID. If the webinar ID is provided instead of UUID,the response will be for the latest webinar instance. \n\nIf a UUID starts with \"/\" or contains \"//\" (example: \"/ajXp112QmuoKj4854875==\"), you must **double encode** the UUID before making an API request. ",
+          "example": "atsXxhSEQWit9t+U02HXNQ==",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get `in-meeting` chat",
+        "parameters": [],
+        "responses": {}
+      },
+      "delete": {
+        "summary": "Delete meeting recordings",
+        "parameters": [
+          {
+            "name": "action",
+            "in": "query",
+            "required": false,
+            "description": "The recording delete actions:<br>`trash` - Move recording to trash.<br>`delete` - Delete recording permanently.",
+            "example": "trash",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `200` <br>\nRecordings deleted. \n\n**Error Code:** `200` <br>\nYou do not have the right permission."
+          },
+          "204": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `204` <br>\nMeeting recording deleted."
+          },
+          "400": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `400`<br>\n**Error Code:** `1010`<br>\nUser does not belong to this account: {accountId}."
+          },
+          "404": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "text/plain"
+              }
+            },
+            "description": "**HTTP Status Code:** `404` <br>\nMeeting recording not found\n**Error Code:** `1001` <br> User {userId} does not exist or does not belong to this account.<br>\n**Error Code:** `3301`<br>There is no recording for this meeting.\n"
+          }
+        }
+      }
+    },
+    "/meetings/{meetingId}/registrants": {
+      "parameters": [
+        {
+          "name": "meetingId",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Add a meeting registrant",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/webinars/{webinarId}/registrants": {
+      "parameters": [
+        {
+          "name": "webinarId",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Add a webinar registrant",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/{userId}/meeting_templates": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "List meeting templates",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/users/{userId}/webinar_templates": {
+      "parameters": [
+        {
+          "name": "userId",
+          "in": "path",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "List webinar templates",
+        "parameters": [],
+        "responses": {}
+      }
+    },
+    "/emails/mailboxes/{email}/drafts": {
+      "parameters": [
+        {
+          "name": "email",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The mailbox address, or special value \"me\" to indicate the primary mailbox for the authenticated user.",
+          "example": "<string>",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Create a new draft email",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "If successful, the response body contains an instance of draft object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "threadId": {
+                          "type": "string"
+                        },
+                        "labelIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `400` <br>\n Invalid Request <br>\n"
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure <br>\n"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "raw": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List emails from draft folder",
+        "parameters": [
+          {
+            "name": "includeSpamTrash",
+            "in": "query",
+            "required": false,
+            "description": "Include messages from SPAM and TRASH in the results. Value should be either \"true\" or \"false\".",
+            "example": "<boolean>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "maxResults",
+            "in": "query",
+            "required": false,
+            "description": "Maximum number of drafts to return. This field defaults to 50. The maximum allowed value for this field is 500.",
+            "example": "<integer>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "pageToken",
+            "in": "query",
+            "required": false,
+            "description": "Page token to retrieve a specific page of results in the list.",
+            "example": "<string>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "required": false,
+            "description": "Specify a server side elastic search query.",
+            "example": "<string>",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "The response body contains list of drafts in the mailbox.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "drafts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "message": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "string"
+                              },
+                              "threadId": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "nextPageToken": {
+                      "type": "string"
+                    },
+                    "resultSizeEstimate": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `400` <br>\n Invalid Request. <br>\n"
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure. <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure. <br>\n"
+          }
+        }
+      }
+    },
+    "/emails/mailboxes/{email}/drafts/send": {
+      "parameters": [
+        {
+          "name": "email",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The mailbox address, or special value \"me\" to indicate the primary mailbox for the authenticated user.",
+          "example": "<string>",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Send out a draft email",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "The response body contains an instance of message object.  **Note**: The message object contains only the ID, thread ID and label IDs.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "threadId": {
+                      "type": "string"
+                    },
+                    "labelIds": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `400` <br>\n Invalid Request. <br>\n"
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure. <br>\n"
+          },
+          "404": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `404` <br>\n Not Found. <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure. <br>\n"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "raw": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emails/mailboxes/{email}/drafts/{draftId}": {
+      "parameters": [
+        {
+          "name": "email",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The mailbox address, or special value \"me\" to indicate the primary mailbox for the authenticated user.",
+          "example": "<string>",
+          "schema": {
+            "type": "string"
+          }
+        },
+        {
+          "name": "draftId",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The immutable ID of the draft.",
+          "example": "<string>",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get the specified draft email",
+        "parameters": [
+          {
+            "name": "format",
+            "in": "query",
+            "required": false,
+            "description": "The format to return the draft in. ",
+            "example": "full",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "The successful response body contains an instance of draft.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "threadId": {
+                          "type": "string"
+                        },
+                        "labelIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "snippet": {
+                          "type": "string"
+                        },
+                        "historyId": {
+                          "type": "string"
+                        },
+                        "internalDate": {
+                          "type": "string"
+                        },
+                        "payload": {
+                          "type": "object",
+                          "properties": {
+                            "partId": {
+                              "type": "string"
+                            },
+                            "mimeType": {
+                              "type": "string"
+                            },
+                            "filename": {
+                              "type": "string"
+                            },
+                            "headers": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "value": {
+                                    "type": "string"
+                                  }
+                                }
+                              }
+                            },
+                            "body": {
+                              "type": "object",
+                              "properties": {
+                                "attachmentId": {
+                                  "type": "string"
+                                },
+                                "size": {
+                                  "type": "string"
+                                },
+                                "data": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "parts": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "partId": {
+                                    "type": "string"
+                                  },
+                                  "mimeType": {
+                                    "type": "string"
+                                  },
+                                  "filename": {
+                                    "type": "string"
+                                  },
+                                  "headers": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "name": {
+                                          "type": "string"
+                                        },
+                                        "value": {
+                                          "type": "string"
+                                        }
+                                      }
+                                    }
+                                  },
+                                  "body": {
+                                    "type": "object",
+                                    "properties": {
+                                      "attachmentId": {
+                                        "type": "string"
+                                      },
+                                      "data": {
+                                        "type": "string"
+                                      },
+                                      "size": {
+                                        "type": "string"
+                                      }
+                                    }
+                                  },
+                                  "parts": {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "object",
+                                      "properties": {
+                                        "partId": {
+                                          "type": "string"
+                                        },
+                                        "mimeType": {
+                                          "type": "string"
+                                        },
+                                        "filename": {
+                                          "type": "string"
+                                        },
+                                        "headers": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "name": {
+                                                "type": "string"
+                                              },
+                                              "value": {
+                                                "type": "string"
+                                              }
+                                            }
+                                          }
+                                        },
+                                        "body": {
+                                          "type": "object",
+                                          "properties": {
+                                            "attachmentId": {
+                                              "type": "string"
+                                            },
+                                            "data": {
+                                              "type": "string"
+                                            },
+                                            "size": {
+                                              "type": "string"
+                                            }
+                                          }
+                                        },
+                                        "parts": {
+                                          "type": "array",
+                                          "items": {
+                                            "type": "object",
+                                            "properties": {
+                                              "partId": {
+                                                "type": "string"
+                                              },
+                                              "mimeType": {
+                                                "type": "string"
+                                              },
+                                              "filename": {
+                                                "type": "string"
+                                              },
+                                              "headers": {
+                                                "type": "array",
+                                                "items": {
+                                                  "type": "object",
+                                                  "properties": {
+                                                    "name": {
+                                                      "type": "string"
+                                                    },
+                                                    "value": {
+                                                      "type": "string"
+                                                    }
+                                                  }
+                                                }
+                                              },
+                                              "body": {
+                                                "type": "object",
+                                                "properties": {
+                                                  "attachmentId": {
+                                                    "type": "string"
+                                                  },
+                                                  "data": {
+                                                    "type": "string"
+                                                  },
+                                                  "size": {
+                                                    "type": "string"
+                                                  }
+                                                }
+                                              }
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "sizeEstimate": {
+                          "type": "string"
+                        },
+                        "raw": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure. <br>\n"
+          },
+          "404": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `404` <br>\n Not Found. <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure. <br>\n"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update the specified draft email",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": " The response body contains an instance of updated draft.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "message": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "threadId": {
+                          "type": "string"
+                        },
+                        "labelIds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `400` <br>\n Invalid Request <br>\n"
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure <br>\n"
+          },
+          "404": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `404` <br>\n Not Found <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure <br>\n"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "object",
+                    "properties": {
+                      "raw": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an existing draft email",
+        "parameters": [],
+        "responses": {
+          "204": {
+            "headers": {},
+            "description": "The specified draft email is deleted. "
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure. <br>\n"
+          },
+          "404": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `404` <br>\n Not Found  \n\n **Error Code:** `404` <br>\n Not Found. <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure. <br>\n"
+          }
+        }
+      }
+    },
+    "/emails/mailboxes/{email}/settings/vacation": {
+      "parameters": [
+        {
+          "name": "email",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The mailbox address, or special value \"me\" to indicate the primary mailbox for the authenticated user.",
+          "example": "<string>",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get mailbox vacation response setting",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "The response body contains an instance of vacation setting object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enableAutoReply": {
+                      "type": "string"
+                    },
+                    "responseSubject": {
+                      "type": "string"
+                    },
+                    "responseBodyPlainText": {
+                      "type": "string"
+                    },
+                    "responseBodyHtml": {
+                      "type": "string"
+                    },
+                    "enableAlwaysRespond": {
+                      "type": "string"
+                    },
+                    "restrictToContacts": {
+                      "type": "string"
+                    },
+                    "restrictToDomain": {
+                      "type": "string"
+                    },
+                    "startTime": {
+                      "type": "string"
+                    },
+                    "startTimeISO": {
+                      "type": "string"
+                    },
+                    "endTime": {
+                      "type": "string"
+                    },
+                    "endTimeISO": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `400` <br>\n Invalid Request <br>\n"
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure <br>\n"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update mailbox vacation response setting",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "The response body contains an instance of vacation setting object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "enableAutoReply": {
+                      "type": "string"
+                    },
+                    "responseSubject": {
+                      "type": "string"
+                    },
+                    "responseBodyPlainText": {
+                      "type": "string"
+                    },
+                    "responseBodyHtml": {
+                      "type": "string"
+                    },
+                    "enableAlwaysRespond": {
+                      "type": "string"
+                    },
+                    "restrictToContacts": {
+                      "type": "string"
+                    },
+                    "restrictToDomain": {
+                      "type": "string"
+                    },
+                    "startTime": {
+                      "type": "string"
+                    },
+                    "startTimeISO": {
+                      "type": "string"
+                    },
+                    "endTime": {
+                      "type": "string"
+                    },
+                    "endTimeISO": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `400` <br>\n invalidArgument <br>\n"
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure <br>\n"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "enableAutoReply": {
+                    "type": "string"
+                  },
+                  "responseSubject": {
+                    "type": "string"
+                  },
+                  "responseBodyPlainText": {
+                    "type": "string"
+                  },
+                  "responseBodyHtml": {
+                    "type": "string"
+                  },
+                  "enableAlwaysRespond": {
+                    "type": "string"
+                  },
+                  "restrictToContacts": {
+                    "type": "string"
+                  },
+                  "restrictToDomain": {
+                    "type": "string"
+                  },
+                  "startTime": {
+                    "type": "string"
+                  },
+                  "startTimeISO": {
+                    "type": "string"
+                  },
+                  "endTime": {
+                    "type": "string"
+                  },
+                  "endTimeISO": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/emails/mailboxes/{email}/settings/language": {
+      "parameters": [
+        {
+          "name": "email",
+          "in": "path",
+          "required": true,
+          "description": "(Required) The mailbox address, or special value \"me\" to indicate the primary mailbox for the authenticated user.",
+          "example": "<string>",
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Get mailbox language setting",
+        "parameters": [
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "The response body contains an instance of language setting object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "displayLanguage": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `400` <br>\n Invalid Request <br>\n"
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure <br>\n"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update mailbox language setting",
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Accept",
+            "in": "header",
+            "required": false,
+            "example": "application/json",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "headers": {
+              "Content-Type": {
+                "schema": {
+                  "type": "string"
+                },
+                "example": "application/json"
+              }
+            },
+            "description": "The response body contains an instance of language setting object.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "displayLanguage": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `400` <br>\n Bad Request  \n\n **Error Code:** `400` <br>\n Invalid Request <br>\n"
+          },
+          "401": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `401` <br>\n Unauthorized  \n\n **Error Code:** `401` <br>\n Authorization Failure <br>\n"
+          },
+          "503": {
+            "headers": {},
+            "description": "**HTTP Status Code:** `503` <br>\n Service Unavailable  \n\n **Error Code:** `503` <br>\n Service Unavailable Or Failure <br>\n"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "displayLanguage": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "BasicAuth": {
+        "type": "http",
+        "scheme": "basic"
+      }
+    }
+  }
+}

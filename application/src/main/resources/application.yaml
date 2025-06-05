@@ -23,3 +23,7 @@ infra:
   bundlr:
     proxy:
       base-url: ${ev.infra.bundlr.proxy.base-url}
+  zoom:
+    account-id: ${ev.infra.zoom.account-id}
+    client-id: ${ev.infra.zoom.client-id}
+    client-secret: ${ev.infra.zoom.client-secret}

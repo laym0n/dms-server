@@ -22,6 +22,8 @@ import java.util.Collection;
 public class UserEntity extends BaseEntity {
     @Column(unique = true, name = "login", nullable = false)
     private String login;
+    @Column(unique = true, name = "email")
+    private String email;
     @Column(name = "password", nullable = false)
     private String password;
     @Column(nullable = false, name = "user_roles")

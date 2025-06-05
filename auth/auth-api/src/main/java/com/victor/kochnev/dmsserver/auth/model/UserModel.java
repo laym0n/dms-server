@@ -14,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 public class UserModel extends BaseModel {
     private String login;
+    private String email;
     private String password;
     private Set<UserRole> roles;
     private boolean enabled;

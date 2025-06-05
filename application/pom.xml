@@ -38,6 +38,10 @@
         </dependency>
         <dependency>
             <groupId>com.victor.kochnev.dmsserver</groupId>
+            <artifactId>infra-zoom</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.victor.kochnev.dmsserver</groupId>
             <artifactId>infra-rest</artifactId>
         </dependency>
         <dependency>

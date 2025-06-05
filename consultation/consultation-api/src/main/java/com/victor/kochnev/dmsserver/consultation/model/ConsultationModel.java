@@ -20,4 +20,5 @@ public class ConsultationModel extends BaseModel {
     private UserModel doctor;
     private ZonedDateTime startDateTime;
     private ConsultationSlotModel consultationSlot;
+    private MeetingData meetingData;
 }
