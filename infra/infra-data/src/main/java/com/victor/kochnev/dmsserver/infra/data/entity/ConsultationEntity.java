@@ -1,13 +1,14 @@
 package com.victor.kochnev.dmsserver.infra.data.entity;
 
+import com.victor.kochnev.dmsserver.consultation.enums.ConsultationStatus;
 import com.victor.kochnev.dmsserver.consultation.model.MeetingData;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.type.SqlTypes;
 import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 import java.time.ZonedDateTime;
 
@@ -32,4 +33,7 @@ public class ConsultationEntity extends BaseEntity {
     @Column(name = "meeting_data", nullable = false, columnDefinition = "JSONB")
     @JdbcTypeCode(SqlTypes.JSON)
     private MeetingData meetingData;
+    @Column(name = "status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ConsultationStatus status;
 }

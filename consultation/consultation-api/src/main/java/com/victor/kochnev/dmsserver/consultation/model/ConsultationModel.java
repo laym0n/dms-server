@@ -2,6 +2,7 @@ package com.victor.kochnev.dmsserver.consultation.model;
 
 import com.victor.kochnev.dmsserver.auth.model.UserModel;
 import com.victor.kochnev.dmsserver.common.model.BaseModel;
+import com.victor.kochnev.dmsserver.consultation.enums.ConsultationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,5 @@ public class ConsultationModel extends BaseModel {
     private ZonedDateTime startDateTime;
     private ConsultationSlotModel consultationSlot;
     private MeetingData meetingData;
+    private ConsultationStatus status;
 }

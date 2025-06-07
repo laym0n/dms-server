@@ -22,4 +22,6 @@ public interface ConsultationModelRepository {
     default ConsultationModel getById(UUID consultationId) {
         return findById(consultationId).orElseThrow(() -> new ResourceNotFoundException(ConsultationModel.class, "id", consultationId.toString()));
     }
+
+    ConsultationModel update(ConsultationModel consultationModel);
 }

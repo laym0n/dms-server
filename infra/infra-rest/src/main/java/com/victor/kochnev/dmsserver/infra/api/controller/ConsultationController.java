@@ -26,6 +26,12 @@ public class ConsultationController {
         return ResponseEntity.ok(consultationsResponse);
     }
 
+    @PostMapping("/consultation/{consultationId}/complete")
+    public ResponseEntity<ConsultationModel> completeConsultation(@PathVariable(name = "consultationId") UUID consultationId) {
+        var consultationsResponse = consultationFacade.complete(consultationId);
+        return ResponseEntity.ok(consultationsResponse);
+    }
+
     @PostMapping("/consultation")
     public ResponseEntity<ConsultationModel> create(@RequestBody ConsultationModel consultationModel) {
         var createConsultationModel = consultationFacade.create(consultationModel);

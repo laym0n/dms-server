@@ -9,6 +9,7 @@ import com.victor.kochnev.dmsserver.common.exception.ModuleException;
 import com.victor.kochnev.dmsserver.common.exception.ResourceAlreadyExistsException;
 import com.victor.kochnev.dmsserver.common.security.SecurityUserService;
 import com.victor.kochnev.dmsserver.consultation.dto.ConsultationSlotInfoDto;
+import com.victor.kochnev.dmsserver.consultation.enums.ConsultationStatus;
 import com.victor.kochnev.dmsserver.consultation.infra.*;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationModel;
 import com.victor.kochnev.dmsserver.consultation.model.ConsultationSlotModel;
@@ -61,9 +62,22 @@ public class ConsultationFacadeImpl implements ConsultationFacade {
         consultation.setPatient(patientUserModel);
         consultation.setDoctor(consultationSlot.getUser());
         consultation.setConsultationSlot(consultationSlot);
+        consultation.setStatus(ConsultationStatus.CREATED);
         var meetingData = meetingClient.createMeeting(consultation);
         consultation.setMeetingData(meetingData);
         return consultationModelRepository.create(consultation);
+    }
+
+    @Override
+    @Transactional
+    public ConsultationModel complete(UUID consultationId) {
+        var consultation = consultationModelRepository.getById(consultationId);
+        var currentUserId = securityUserService.getCurrentUser().getId();
+        if (!currentUserId.equals(consultation.getDoctor().getId())) {
+            throw new AccessNotPermittedException();
+        }
+        consultation.setStatus(ConsultationStatus.COMPLETED);
+        return consultationModelRepository.update(consultation);
     }
 
     @Override

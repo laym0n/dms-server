@@ -73,4 +73,12 @@ public class ConsultationModelRepositoryImpl implements ConsultationModelReposit
         return consultationRepository.findById(consultationId)
                 .map(consultationEntityMapper::mapToModel);
     }
+
+    @Override
+    @Transactional
+    public ConsultationModel update(ConsultationModel consultationModel) {
+        var consultation = consultationRepository.findById(consultationModel.getId()).get();
+        consultationEntityMapper.update(consultation, consultationModel);
+        return consultationEntityMapper.mapToModel(consultation);
+    }
 }

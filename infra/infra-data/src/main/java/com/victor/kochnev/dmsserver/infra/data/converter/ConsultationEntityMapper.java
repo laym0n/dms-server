@@ -18,4 +18,10 @@ public interface ConsultationEntityMapper {
     ConsultationEntity mapToEntity(ConsultationModel consultationModel);
 
     ConsultationModel mapToModel(ConsultationEntity profile);
+
+    @BlankEntityMapping
+    @Mapping(target = "patient", ignore = true)
+    @Mapping(target = "doctor", ignore = true)
+    @Mapping(target = "consultationSlot", ignore = true)
+    void update(@MappingTarget ConsultationEntity consultation, ConsultationModel consultationModel);
 }

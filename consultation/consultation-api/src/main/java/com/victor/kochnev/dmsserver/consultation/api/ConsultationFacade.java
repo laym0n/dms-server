@@ -11,6 +11,8 @@ import java.util.UUID;
 public interface ConsultationFacade {
     ConsultationModel create(ConsultationModel consultation);
 
+    ConsultationModel complete(UUID consultationId);
+
     ModelsResponseDto<ConsultationSlotModel> findConsultationSlots(ModelsRequestDto<ConsultationSlotsFilterDto> requestDto);
 
     ModelsResponseDto<ConsultationModel> getCurrentUserConsultations();
