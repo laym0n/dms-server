@@ -6,7 +6,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
+
+import java.time.Duration;
+import java.time.temporal.ChronoUnit;
 
 @Configuration
 @ComponentScan(basePackageClasses = BundlrProxyScanMarker.class)
@@ -17,8 +21,13 @@ public class BundlrProxyInfraConfig {
 
     @Bean
     public RestClient bundlrProxyRestClient() {
+        var requestFactory = new HttpComponentsClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(Duration.of(2, ChronoUnit.MINUTES));
+        requestFactory.setConnectionRequestTimeout(Duration.of(2, ChronoUnit.MINUTES));
+        requestFactory.setReadTimeout(Duration.of(2, ChronoUnit.MINUTES));
         return RestClient.builder()
                 .baseUrl(properties.getBaseUrl())
+                .requestFactory(requestFactory)
                 .build();
     }
 }
