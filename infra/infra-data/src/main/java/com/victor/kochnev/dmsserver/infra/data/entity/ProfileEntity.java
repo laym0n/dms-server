@@ -20,9 +20,8 @@ public class ProfileEntity extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private UserEntity user;
 
-    @ManyToOne
-    @JoinColumn(name = "city_id")
-    private CityEntity city;
+    @Column(name = "city")
+    private String city;
 
     @Column(name = "name", nullable = false)
     private String name;

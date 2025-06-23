@@ -38,11 +38,9 @@ public final class ProfileSpecification {
         return (root, query, cb) -> {
             if (Long.class.equals(query.getResultType())) {
                 root.join(ProfileEntity_.specializations, JoinType.LEFT);
-                root.join(ProfileEntity_.city, JoinType.LEFT);
                 root.join(ProfileEntity_.user);
             } else {
                 root.fetch(ProfileEntity_.specializations, JoinType.LEFT);
-                root.fetch(ProfileEntity_.city, JoinType.LEFT);
                 root.fetch(ProfileEntity_.user);
             }
             return cb.conjunction();

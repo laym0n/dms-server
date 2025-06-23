@@ -2,9 +2,7 @@ package com.victor.kochnev.dmsserver.infra.data.adapter;
 
 import com.victor.kochnev.dmsserver.common.exception.ResourceNotFoundException;
 import com.victor.kochnev.dmsserver.infra.data.converter.ProfileMapper;
-import com.victor.kochnev.dmsserver.infra.data.entity.CityEntity;
 import com.victor.kochnev.dmsserver.infra.data.entity.UserEntity;
-import com.victor.kochnev.dmsserver.infra.data.repository.CityRepository;
 import com.victor.kochnev.dmsserver.infra.data.repository.ProfileRepository;
 import com.victor.kochnev.dmsserver.infra.data.repository.UserRepository;
 import com.victor.kochnev.dmsserver.infra.data.specification.ProfileSpecification;
@@ -25,7 +23,6 @@ public class ProfileModelModelRepositoryImpl implements ProfileModelRepository {
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
     private final ProfileMapper profileMapper;
-    private final CityRepository cityRepository;
 
     @Override
     @Transactional
@@ -33,13 +30,7 @@ public class ProfileModelModelRepositoryImpl implements ProfileModelRepository {
         var userId = profile.getUser().getId();
         var userEntity = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException(UserEntity.class, "id", String.valueOf(userId)));
-        CityEntity city = null;
         var profileEntity = profileMapper.mapToEntity(profile);
-        if (profile.getCity() != null) {
-            city = cityRepository.findById(profile.getCity().getId())
-                    .orElseThrow(() -> new ResourceNotFoundException(CityEntity.class, "id", String.valueOf(profile.getCity().getId())));
-            profileEntity.setCity(city);
-        }
         profileEntity.setUser(userEntity);
         var savedProfile = profileRepository.save(profileEntity);
         return profileMapper.mapToModel(savedProfile);

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.UUID;
+
 @Component
 @RequiredArgsConstructor
 public class BundlrArweaveBackUpAdapter implements BackUpClient {
@@ -17,9 +19,9 @@ public class BundlrArweaveBackUpAdapter implements BackUpClient {
     private final RestClient restClient;
 
     @Override
-    public BackUpResult backUpRecord(BackUpRecord backUpRecord) {
+    public BackUpResult backUpRecord(UUID userId, BackUpRecord backUpRecord) {
         return restClient.post()
-                .uri("/upload")
+                .uri("/upload/" + userId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(backUpRecord)
                 .retrieve()

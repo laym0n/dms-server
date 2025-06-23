@@ -15,6 +15,6 @@ import lombok.experimental.SuperBuilder;
 @Schema(oneOf = {DoctorProfileModel.class})
 public class ProfileModel extends BaseModel {
     private UserModel user;
-    private CityModel city;
+    private String city;
     private String name;
 }
